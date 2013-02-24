@@ -1,0 +1,26 @@
+Package: spatial.tools
+Maintainer: Jonathan Asher Greenberg <spatial-tools@estarcion.net>
+License: GPL (>= 2)
+Title: R functions for working with spatial data.
+Type: Package
+LazyLoad: yes
+Author: Jonathan Asher Greenberg
+Description: Spatial functions meant to enhance the core functionality
+        of the package "raster", including a parallel processing engine
+        for use with rasters.
+Version: 0.9.4
+Date: 2013-02-24
+Depends: raster, rgdal, sp, mmap, abind, parallel, foreach, doParallel,
+        R (>= 2.15.2)
+Collate: 'spatial_sync_vector.R' 'tahoe_highrez_data.R'
+        'tahoe_highrez_training_data.R' 'tahoe_lidar_bareearth_data.R'
+        'tahoe_lidar_highesthit_data.R' 'remove_file_extension.R'
+        'build_raster_header.R' 'fix_extent.R' 'add_leading_zeroes.R'
+        'spatial_sync_raster.R' 'binary_image_write.R' 'focal_hpc.R'
+        'getValuesBlock_enhanced.R' 'which_simple.R'
+        'subset_raster_by_names.R' 'sfQuickInit.R'
+        'create_blank_raster.R' 'sfQuickStop.R'
+Packaged: 2013-02-24 13:42:41 UTC; jgrn307
+NeedsCompilation: no
+Repository: CRAN
+Date/Publication: 2013-02-24 16:32:52

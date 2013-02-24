@@ -1,0 +1,23 @@
+\name{subset_raster_by_names}
+\alias{subset_raster_by_names}
+\title{Subsets a raster based on its layer names}
+\usage{
+  subset_raster_by_names(x, subset_names, allnames = TRUE)
+}
+\arguments{
+  \item{x}{A Raster* object to be subsetted.}
+
+  \item{subset_names}{Character. A vector of layer names to
+  use to subset the Raster*.}
+
+  \item{allnames}{Logical. Make sure all subset_names are
+  contained by x?}
+}
+\description{
+  Subsets a raster based on its layer names
+}
+\author{
+  Jonathan A. Greenberg
+  (\email{spatial.tools@estarcion.net})
+}
+
