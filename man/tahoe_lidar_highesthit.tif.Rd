@@ -7,7 +7,8 @@
   model from the Lake Tahoe Basin.
 }
 \examples{
-tahoe_lidar_highesthit <- raster(system.file("external/tahoe_lidar_highesthit.tif", package="spatial.tools"))
+tahoe_lidar_highesthit <-
+	raster(system.file("external/tahoe_lidar_highesthit.tif", package="spatial.tools"))
 plot(tahoe_lidar_highesthit)
 }
 \author{

@@ -4,10 +4,14 @@
 #' @author Jonathan A. Greenberg \email{spatial.tools@@estarcion.net}
 #' @keywords data
 #' @examples
-#' tahoe_highrez_training_polygons <- readOGR(dsn=system.file("external", package="spatial.tools"),layer="tahoe_highrez_training")
+#' tahoe_highrez_training_polygons <- readOGR(
+#' 	dsn=system.file("external", package="spatial.tools"),layer="tahoe_highrez_training")
 #' spplot(tahoe_highrez_training_polygons,zcol="Class")
-#' tahoe_highrez_training_points <- readOGR(dsn=system.file("external", package="spatial.tools"),layer="tahoe_highrez_training_points")
+#' tahoe_highrez_training_points <- readOGR(
+#' 	dsn=system.file("external", package="spatial.tools"),layer="tahoe_highrez_training_points")
 #' spplot(tahoe_highrez_training_points,zcol="SPECIES")
-#' tahoe_highrez_training_points_utm <- readOGR(dsn=system.file("external", package="spatial.tools"),layer="tahoe_highrez_training_points_utm")
+#' tahoe_highrez_training_points_utm <- readOGR(
+#' 	dsn=system.file("external", package="spatial.tools"),
+#' 	layer="tahoe_highrez_training_points_utm")
 #' print(projection(tahoe_highrez_training_points_utm))
 NULL

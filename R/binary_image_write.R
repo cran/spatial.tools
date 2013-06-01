@@ -20,7 +20,10 @@
 #' setMinMax(blank_raster)
 #' # Write some ones to to the 100th line, columns 25 to 50, bands 1 and 3:
 #' data_position <- list(25:50,100,c(1,3))
-#' data1s <- array(1,dim=c(length(data_position[[1]]),length(data_position[[2]]),length(data_position[[3]])))
+#' data1s <- array(1,dim=c(
+#' 	length(data_position[[1]]),
+#' 	length(data_position[[2]]),
+#' 	length(data_position[[3]])))
 #' plot(raster(test_blank_file,layer=1))
 #' binary_image_write(filename=test_blank_file,
 #' 	mode=real64(),image_dims=dim(tahoe_highrez),interleave="BSQ",

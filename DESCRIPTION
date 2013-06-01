@@ -8,10 +8,10 @@ Author: Jonathan Asher Greenberg
 Description: Spatial functions meant to enhance the core functionality
         of the package "raster", including a parallel processing engine
         for use with rasters.
-Version: 0.9.4
-Date: 2013-02-24
+Version: 1.0.2
+Date: 2013-06-01
 Depends: raster, rgdal, sp, mmap, abind, parallel, foreach, doParallel,
-        R (>= 2.15.2)
+        rgeos, R (>= 2.15.3)
 Collate: 'spatial_sync_vector.R' 'tahoe_highrez_data.R'
         'tahoe_highrez_training_data.R' 'tahoe_lidar_bareearth_data.R'
         'tahoe_lidar_highesthit_data.R' 'remove_file_extension.R'
@@ -19,8 +19,11 @@ Collate: 'spatial_sync_vector.R' 'tahoe_highrez_data.R'
         'spatial_sync_raster.R' 'binary_image_write.R' 'focal_hpc.R'
         'getValuesBlock_enhanced.R' 'which_simple.R'
         'subset_raster_by_names.R' 'sfQuickInit.R'
-        'create_blank_raster.R' 'sfQuickStop.R'
-Packaged: 2013-02-24 13:42:41 UTC; jgrn307
+        'create_blank_raster.R' 'sfQuickStop.R' 'is.Raster.R'
+        'bbox_to_SpatialPolygons.R' 'brickstack_to_raster_list.R'
+        'getValuesBlock_stackfix.R' 'get_gdal_installation.R'
+        'modify_raster_margins.R' 'projectRaster_rigorous.R'
+Packaged: 2013-06-01 17:43:38 UTC; jgrn307
 NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2013-02-24 16:32:52
+Date/Publication: 2013-06-01 19:51:45

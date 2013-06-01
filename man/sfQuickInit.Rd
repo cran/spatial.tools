@@ -26,7 +26,4 @@ sfQuickStop()
 \author{
   Jonathan A. Greenberg
 }
-\seealso{
-  \code{\link[snowfall]{sfInit}}
-}
 

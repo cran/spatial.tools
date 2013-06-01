@@ -7,7 +7,8 @@
   Lake Tahoe Basin.
 }
 \examples{
-tahoe_lidar_bareearth <- raster(system.file("external/tahoe_lidar_bareearth.tif", package="spatial.tools"))
+tahoe_lidar_bareearth <-
+	raster(system.file("external/tahoe_lidar_bareearth.tif", package="spatial.tools"))
 plot(tahoe_lidar_bareearth)
 }
 \author{

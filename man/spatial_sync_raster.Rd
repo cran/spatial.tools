@@ -3,7 +3,7 @@
 \title{Spatially Sync Rasters}
 \usage{
   spatial_sync_raster(unsynced, reference, method = "ngb",
-    size_only = FALSE, raster_size, verbose = FALSE)
+    size_only = FALSE, raster_size, verbose = FALSE, ...)
 }
 \arguments{
   \item{unsynced}{A Raster object to be aligned to the
@@ -23,6 +23,8 @@
   \item{size_only}{TODO}
 
   \item{raster_size}{TODO}
+
+  \item{...}{parameters to be passed to writeRaster}
 }
 \value{
   Returns a RasterLayer, RasterBrick or RasterStack object

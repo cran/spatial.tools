@@ -6,7 +6,7 @@
     window_center = c(ceiling(window_dims[1]/2), ceiling(window_dims[2]/2)),
     filename = NULL, overwrite = FALSE,
     outformat = "raster", chunk_format = "array",
-    minblocks = 1, verbose = FALSE)
+    minblocks = "max", blocksize = NULL, verbose = FALSE)
 }
 \arguments{
   \item{x}{Raster*. A Raster* used as the input into the
@@ -16,7 +16,8 @@
   the image. See Details.}
 
   \item{args}{list. Arguments to pass to the function (see
-  ?mapply).}
+  ?mapply).  Note that the 'fun' should explicitly name the
+  variables.}
 
   \item{window_dims}{Vector. The size of a processing
   window in col x row order.  Be default, a single pixel
@@ -32,6 +33,10 @@
 
   \item{minblocks}{Numeric. The minimum number of chunks to
   divide the raster into for processing.  Defaults to 1.}
+
+  \item{blocksize}{Numeric. The size (in rows) for a block
+  of data.  If unset, focal_hpc will attempt to figure out
+  an optimal blocksize.}
 
   \item{filename}{character. Filename of the output
   raster.}
@@ -121,9 +126,11 @@ tahoe_highrez <- brick(system.file("external/tahoe_highrez.tif", package="spatia
 		ndvi <- array(ndvi,dim=c(dim(x)[1],dim(x)[2],1))
 		return(ndvi)
 	}
+
 	sfQuickInit(cpus=2)
  tahoe_ndvi <- focal_hpc(x=tahoe_highrez,fun=ndvi_function)
 	sfQuickStop()
+
 \dontrun{
 # Focal-based processing:
 local_smoother <- function(x,...)

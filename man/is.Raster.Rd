@@ -1,0 +1,28 @@
+\name{is.Raster}
+\alias{is.Raster}
+\title{Tests if an input is a RasterLayer, RasterBrick, or a RasterStack.}
+\usage{
+  is.Raster(x)
+}
+\arguments{
+  \item{x}{an R Object.}
+}
+\value{
+  A logical vector.
+}
+\description{
+  Tests if an input is a RasterLayer, RasterBrick, or a
+  RasterStack.
+}
+\examples{
+tahoe_highrez <- brick(system.file("external/tahoe_highrez.tif", package="spatial.tools"))
+is.Raster(tahoe_highrez)
+tahoe_lidar_bareearth <-
+	raster(system.file("external/tahoe_lidar_bareearth.tif", package="spatial.tools"))
+is.Raster(tahoe_lidar_bareearth)
+is.Raster("character")
+}
+\author{
+  Jonathan A. Greenberg
+}
+

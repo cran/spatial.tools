@@ -3,7 +3,6 @@
 #' @param cpus Number of cpus.  Will default to the max available cpus.
 #' @param ... parameters to pass to sfInit()
 #' @author Jonathan A. Greenberg
-#' @seealso \code{\link[snowfall]{sfInit}}
 #' @details (Even more) quickly start a snowfall cluster with maximum available
 #' cpus, parallel = TRUE, and type = "SOCK" and registers it with foreach.  
 #' @examples 

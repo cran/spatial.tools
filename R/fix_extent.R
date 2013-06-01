@@ -3,6 +3,17 @@
 #' @param broken_extents list of Raster* objects. Raster* objects that will be coerced to the extent_reference's extent.
 #' @author Jonathan A. Greenberg (\email{spatial.tools@@estarcion.net})
 #' @seealso \code{\link{extent}},\code{\link{stack}}
+#' 
+#' @examples
+#' 
+#' tahoe_highrez <- brick(system.file("external/tahoe_highrez.tif", package="spatial.tools"))
+#' tahoe_highrez
+#' tahoe_highrez_broken <- tahoe_highrez
+#' # We'll "break" the extent:
+#' extent(tahoe_highrez_broken) <- c(0,360,-90,90)
+#' tahoe_highrez_fixed <- fix_extent(tahoe_highrez,tahoe_highrez_broken)
+#' tahoe_highrez_fixed
+#' 
 #' @export
 
 
@@ -12,6 +23,7 @@ fix_extent <- function(extent_reference,broken_extents)
 	{
 		extent_reference = broken_extents[[1]]
 	}
+	if(class(broken_extents) != "list") broken_extents <- list(broken_extents)
 	
 	base_extent=extent(extent_reference)
 	fixed_extents=mapply(

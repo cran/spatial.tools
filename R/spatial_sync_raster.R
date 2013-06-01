@@ -16,11 +16,13 @@
 #' PRESENT).
 #' @param size_only TODO
 #' @param raster_size TODO
+#' @param ... parameters to be passed to writeRaster
 #' @return Returns a RasterLayer, RasterBrick or RasterStack object synced to
 #' the reference raster object.
 #' @author Jonathan A. Greenberg (\email{spatial.tools@@estarcion.net})
 #' @export
-spatial_sync_raster <- function(unsynced,reference,method="ngb",size_only=FALSE,raster_size,verbose=FALSE)
+spatial_sync_raster <- function(unsynced,reference,method="ngb",
+	size_only=FALSE,raster_size,verbose=FALSE,...)
 {
 	
 	if(!size_only)
@@ -67,19 +69,19 @@ spatial_sync_raster <- function(unsynced,reference,method="ngb",size_only=FALSE,
 		}
 		
 		if(verbose) { message("Expanding...") }
-		expanded_raster=expand(pr,reference)
+		expanded_raster=extend(pr,reference)
 		if(verbose) { message("Cropping...") }
 		synced_raster=crop(expanded_raster,reference)
 	
-		# This in theory shouldn't be neccessary...
+		# This in theory shouldn't be neccesasary...
 		if(verbose) { message("Fixing extents...") }
 		extent(synced_raster)=extent(reference)
 	} else
 	{
-		if(missing(raster_size))
-		{
-			stop("For size_only=TRUE you must set the raster_size as c(ncol,nrow)")
-		} 
+#		if(missing(raster_size))
+#		{
+#			stop("For size_only=TRUE you must set the raster_size as c(ncol,nrow)")
+#		} 
 		
 		unsynced_ncol=ncol(unsynced)
 		unsynced_nrow=nrow(unsynced)
@@ -91,11 +93,14 @@ spatial_sync_raster <- function(unsynced,reference,method="ngb",size_only=FALSE,
 		extent(unsynced)=extent(unsynced_ulx,unsynced_ulx+unsynced_ncol,unsynced_uly,unsynced_uly+unsynced_nrow)
 		full_extent=extent(0,raster_size[[1]],0,raster_size[[2]])
 		
-		synced_raster=expand(unsynced,full_extent)
+		synced_raster=extend(unsynced,full_extent)
 		extent(synced_raster)=full_extent
 		res(synced_raster)=c(1,1)
 	}
-
+#	if(!missing(filename))
+#	{
+#		writeRaster(synced_raster,...)
+#	}
 	return(synced_raster)
 	
 }

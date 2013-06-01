@@ -4,7 +4,8 @@
 #' @param r1 Numeric. The start row of the chunk.
 #' @param r2 Numeric. The end row of the chunk.
 #' @param c1 Numeric. The start column of the chunk.
-#' @param c2 Numeric The end row of the chunk.
+#' @param c2 Numeric. The end row of the chunk.
+#' @param lyrs Numeric. Vector of layer IDs.  Defaults to all layers (1:nlayers(x)).
 #' @param format Character. If "array" (default), the chunk will be returned in a 3-d array with dimensions representing column,row,and layer.  If "raster", the chunk will be returned as a Raster* object.
 #' @param ... Other parameters.
 #' 
@@ -20,13 +21,14 @@
 #' mychunk_raster
 #' @export
 
-getValuesBlock_enhanced=function(x,r1=1,r2=nrow(x),c1=1,c2=ncol(x),format="array",...)
+getValuesBlock_enhanced=function(x,r1=1,r2=nrow(x),c1=1,c2=ncol(x),lyrs=(1:nlayers(x)),format="array",...)
 {	
 	if(format=="array")
 	{
 		layer_names=names(x)
-		
-		getvalues_raw=as.numeric(getValues(crop(x, extent(x, r1=r1, r2=r2, c1=c1,c2=c2))))
+#		if(class(x)=="RasterStack")
+		getvalues_raw <- as.numeric(getValuesBlock_stackfix(x,row=r1,nrows=(r2-r1+1),col=c1,ncols=(c2-c1+1),lyrs=lyrs))		
+#		getvalues_raw=as.numeric(getValues(crop(x, extent(x, r1=r1, r2=r2, c1=c1,c2=c2))))
 		getvalues_raw_nrows=r2-r1+1
 		getvalues_raw_ncols=c2-c1+1
 		getvalues_raw_nlayers=nlayers(x)

@@ -1,0 +1,53 @@
+\name{projectRaster_rigorous}
+\alias{projectRaster_rigorous}
+\title{Performs an area-weighted resampling of raster datasets.}
+\usage{
+  projectRaster_rigorous(from, to, method = "mode",
+    na.rm = FALSE, verbose = FALSE)
+}
+\arguments{
+  \item{from}{Raster* The sources raster to be resampled.}
+
+  \item{to}{Raster* A target raster that the from will be
+  resampled to (extent, resolution, projection).}
+
+  \item{method}{Character. Default is "mode". See details.}
+
+  \item{na.rm}{Logical. Remove NAs before calculating cell
+  stats?}
+
+  \item{verbose}{logical. Enable verbose execution? Default
+  is FALSE.}
+}
+\description{
+  Performs an area-weighted resampling of raster datasets.
+}
+\details{
+  This function is designed to solve the problem of
+  resampling/reprojecting rasters using area-based, not
+  point based (e.g. nearest neighbor, bilinear, cubic
+  convolution), resampling.  The output pixel is a function
+  of the areas of the input pixels, so this should be used
+  for resampling from a finer resolution to a coarser
+  resolution.
+
+  The method defaults to "mode", which will return the
+  value covering the largest area of the output pixel area.
+  Other methods will be added in the future.
+
+  A word of warning: this algorithm is SLOW.  The function
+  uses focal_hpc, so we highly recommend using it with a
+  foreach engine running (e.g. use sfQuickInit() ). Keep in
+  mind this is a "dirty" parallel problem, so different
+  chunks may execute at different speeds and have different
+  memory footprints.
+}
+\author{
+  Jonathan A. Greenberg
+}
+\seealso{
+  \code{\link[raster]{projectRaster}},
+  \code{\link[raster]{extract}},
+  \code{\link[raster]{aggregate}}
+}
+
