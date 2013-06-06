@@ -34,7 +34,7 @@
   In certain cases, getValuesBlock may run very slowly on a
   RasterStack, particularly when the RasterStack is
   comprised of RasterBricks.  This code attempts to fix the
-  inefficiency my running the extract on each unique file
+  inefficiency by running the extract on each unique file
   of the RasterStack, rather than each unique layer.
 }
 \examples{

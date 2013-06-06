@@ -9,7 +9,7 @@
 #' @param verbose logical. Enable verbose execution? Default is FALSE.  
 #' @author Jonathan A. Greenberg and Robert Hijimans (\email{spatial.tools@@estarcion.net})
 #' @seealso \code{\link{hdr}},\code{\link{dataType}}
-#' @examples
+#' @examples \dontrun{ 
 #' tahoe_highrez <- brick(system.file("external/tahoe_highrez.tif", package="spatial.tools"))
 #' test_blank_file <- create_blank_raster(filename=paste(tempfile(),".gri",sep=""),
 #' 	reference_raster=tahoe_highrez,nlayers=2,
@@ -18,6 +18,7 @@
 #' 	reference_raster=tahoe_highrez,out_nlayers=2,
 #' 	dataType='FLT8S',format='raster',bandorder="BSQ",setMinMax=TRUE)
 #' test_blank_raster
+#' }
 #' @export
 
 build_raster_header <- function(x_filename,reference_raster,out_nlayers,

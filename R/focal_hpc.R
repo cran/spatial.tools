@@ -329,7 +329,7 @@ focal_hpc_focal_processing <- function(tr,texture_tr,chunkArgs)
 				SIMPLIFY=FALSE)
 		
 #		browser()
-		foreach(chunk=chunkList, .packages=c("raster","rgdal","spatial.tools","mmap"),
+		foreach(chunk=chunkList, .packages=c("rgdal","raster","spatial.tools","mmap"),
 						.verbose=verbose) %dopar% 
 			spatial.tools:::focal_hpc_focalChunkFunction(chunk,chunkArgs)
 		
@@ -398,13 +398,13 @@ focal_hpc_pixel_processing <- function(tr,chunkArgs)
 	
 	list2env(chunkArgs,envir=environment())
 	chunkID <- seq(tr$n)
-	foreach(chunkID=chunkID, .packages=c("raster","rgdal","spatial.tools","mmap"),.verbose=verbose) %dopar% 
+	foreach(chunkID=chunkID, .packages=c("rgdal","raster","spatial.tools","mmap"),.verbose=verbose) %dopar% 
 			spatial.tools:::focal_hpc_pixelChunkFunction(chunkID,tr,x,chunk_format,fun,args,layer_names,outbands,
 					filename)
 }
 
-#' Engine for performing fast, easy to develop pixel and focal raster calculations with parallel processing capability.
-#' @param x Raster*. A Raster* used as the input into the function.  Multiple inputs should be stacked together.
+#' Engine for performing fast, easy-to-develop pixel and focal raster calculations with parallel processing capability.
+#' @param x Raster*. A Raster* used as the input into the function.  Multiple inputs should be stack()'ed together.
 #' @param fun function. A focal function to be applied to the image. See Details.
 #' @param args list. Arguments to pass to the function (see ?mapply).  Note that the 'fun' should explicitly name the variables.
 #' @param window_dims Vector. The size of a processing window in col x row order.  Be default, a single pixel (c(1,1).
@@ -424,7 +424,7 @@ focal_hpc_pixel_processing <- function(tr,chunkArgs)
 #' all nodes in the cluster to finish and then perform sequential writing.  On Windows systems,
 #' random writes are possible but apparently not parallel writes.  focal_hpc solves this by trying to
 #' write to a portion of the image file, and if it finds an error (a race condition occurs), it will
-#' simply retry the writes until it successfully finishes.  On a Linux system, truly parallel writes
+#' simply retry the writes until it successfully finishes.  On Unix-alikes, truly parallel writes
 #' should be possible.
 #'
 #' focal_hpc operates in two modes, which have different input and outputs to the function:

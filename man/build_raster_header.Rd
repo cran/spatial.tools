@@ -38,6 +38,7 @@
   Builds a raster header for a flat binary file.
 }
 \examples{
+\dontrun{
 tahoe_highrez <- brick(system.file("external/tahoe_highrez.tif", package="spatial.tools"))
 test_blank_file <- create_blank_raster(filename=paste(tempfile(),".gri",sep=""),
 	reference_raster=tahoe_highrez,nlayers=2,
@@ -46,6 +47,7 @@ test_blank_raster <- build_raster_header(x_filename=test_blank_file,
 	reference_raster=tahoe_highrez,out_nlayers=2,
 	dataType='FLT8S',format='raster',bandorder="BSQ",setMinMax=TRUE)
 test_blank_raster
+}
 }
 \author{
   Jonathan A. Greenberg and Robert Hijimans

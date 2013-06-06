@@ -11,7 +11,7 @@
 #' @author Jonathan A. Greenberg
 #' @seealso \code{\link[mmap]{mmap}},\code{\link[spatial.tools]{create_blank_raster}}
 #' @keywords mmap
-#' @examples
+#' @examples \dontrun{ 
 #' tahoe_highrez <- brick(system.file("external/tahoe_highrez.tif", package="spatial.tools"))
 #' # Create a blank file using create_blank_raster
 #' test_blank_file <- create_blank_raster(reference_raster=tahoe_highrez)
@@ -30,6 +30,7 @@
 #' 	data=data1s,data_position=data_position)
 #' setMinMax(blank_raster)
 #' plot(raster(blank_raster,layer=1))
+#' }
 #' @export
 
 binary_image_write=function(filename,mode=real64(),image_dims,interleave="BSQ",

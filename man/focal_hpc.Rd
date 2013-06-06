@@ -1,6 +1,6 @@
 \name{focal_hpc}
 \alias{focal_hpc}
-\title{Engine for performing fast, easy to develop pixel and focal raster calculations with parallel processing capability.}
+\title{Engine for performing fast, easy-to-develop pixel and focal raster calculations with parallel processing capability.}
 \usage{
   focal_hpc(x, fun, args = NULL, window_dims = c(1, 1),
     window_center = c(ceiling(window_dims[1]/2), ceiling(window_dims[2]/2)),
@@ -10,7 +10,8 @@
 }
 \arguments{
   \item{x}{Raster*. A Raster* used as the input into the
-  function.  Multiple inputs should be stacked together.}
+  function.  Multiple inputs should be stack()'ed
+  together.}
 
   \item{fun}{function. A focal function to be applied to
   the image. See Details.}
@@ -52,7 +53,7 @@
   is FALSE.}
 }
 \description{
-  Engine for performing fast, easy to develop pixel and
+  Engine for performing fast, easy-to-develop pixel and
   focal raster calculations with parallel processing
   capability.
 }
@@ -68,8 +69,8 @@
   focal_hpc solves this by trying to write to a portion of
   the image file, and if it finds an error (a race
   condition occurs), it will simply retry the writes until
-  it successfully finishes.  On a Linux system, truly
-  parallel writes should be possible.
+  it successfully finishes.  On Unix-alikes, truly parallel
+  writes should be possible.
 
   focal_hpc operates in two modes, which have different
   input and outputs to the function:

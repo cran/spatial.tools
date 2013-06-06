@@ -5,7 +5,7 @@
   get_gdal_installation(return_drivers = TRUE,
     return_python_utilities = TRUE,
     return_most_current = TRUE, required_drivers = NULL,
-    verbose = FALSE)
+    setOptions = TRUE, verbose = FALSE)
 }
 \arguments{
   \item{return_drivers}{Logical. Return a table of GDAL
@@ -20,6 +20,10 @@
 
   \item{required_drivers}{Character. What driver is
   required?  Default is no required drivers.}
+
+  \item{setOptions}{Logical. Set the
+  "spatial.tools.gdalInstallation" option for use with
+  other functions?  Default is TRUE.}
 
   \item{verbose}{logical. Enable verbose execution? Default
   is FALSE.}
@@ -38,15 +42,31 @@
   even if the PATH is not set on the local computer.  It
   accomplishes this by brute-force searching for the
   gdalinfo(.exe) executable on the user's local system,
-  starting at the root level ("/" on Unix-alikes, "c:" on
+  starting at the root level ("/" on Unix-alikes, "C:" on
   Windows).  It can also (optionally) return information on
   the available drivers, python utilities, and can
   determine the "best" (most current version) of GDAL if
   there are multiple installs (more common on Windows boxes
   than Unix-alikes).
 
-  This code is a heavily modified version of code found in
-  the MODIS package.
+  Each user's installation will be different, but in the
+  author's experience, for each OS, we recommend the
+  following installations:
+
+  Unix: See \url{http://gdal.org} for building/installing
+  GDAL on your system.
+
+  Mac: Install the William Kyngesburye's GDAL Complete
+  Framework:
+  \url{http://www.kyngchaos.com/software:frameworks}
+
+  Windows: Several choices (in order of the author's
+  preference): \itemize{ \item Standalone QGIS Installer:
+  \url{http://hub.qgis.org/projects/quantum-gis/wiki/Download#11-Standalone-Installer-recommended-for-new-users}
+  \item OSGeo4W (follow the "Quick Start for OSGeo4W
+  Users"): \url{http://trac.osgeo.org/osgeo4w/} \item
+  FWTools, 32-bit only: \url{http://fwtools.maptools.org/}
+  }
 }
 \examples{
 \dontrun{
@@ -60,11 +80,14 @@ mygdals[[1]]$python_utilities
 mygdals <- get_gdal_installation(return_most_current=FALSE)
 sapply(mygdals,function(X) X$gdal_path)
 # Only return GDAL installs that support a given driver:
-mygdals <- get_gdal_installation(required_drivers="HDF")
+mygdals <- get_gdal_installation(required_drivers="HDF4")
 }
 }
 \author{
-  Jonathan A. Greenberg
+  Jonathan A. Greenberg and Matteo Mattiuzzi
+}
+\references{
+  \url{http://gdal.org}
 }
 \keyword{format}
 

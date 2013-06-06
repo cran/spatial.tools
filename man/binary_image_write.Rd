@@ -36,6 +36,7 @@
   col/row/band positioning.
 }
 \examples{
+\dontrun{
 tahoe_highrez <- brick(system.file("external/tahoe_highrez.tif", package="spatial.tools"))
 # Create a blank file using create_blank_raster
 test_blank_file <- create_blank_raster(reference_raster=tahoe_highrez)
@@ -54,6 +55,7 @@ binary_image_write(filename=test_blank_file,
 	data=data1s,data_position=data_position)
 setMinMax(blank_raster)
 plot(raster(blank_raster,layer=1))
+}
 }
 \author{
   Jonathan A. Greenberg

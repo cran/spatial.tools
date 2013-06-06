@@ -14,7 +14,7 @@
 #' @seealso \code{\link[raster]{getValuesBlock}}
 #' @details In certain cases, getValuesBlock may run very slowly on a RasterStack,
 #' particularly when the RasterStack is comprised of RasterBricks.  This code attempts
-#' to fix the inefficiency my running the extract on each unique file of the RasterStack,
+#' to fix the inefficiency by running the extract on each unique file of the RasterStack,
 #' rather than each unique layer.
 #' 
 #' @examples
@@ -33,8 +33,8 @@ getValuesBlock_stackfix <- function(x, row=1, nrows=1, col=1, ncols=(ncol(x)-col
 	if(class(x)=="RasterStack")
 	{
 		# First we will determine the unique files
-		all_filenames <- sapply(x@layers,function(X) {filename(X) } )
-		inMemory_layers <- (1:nlayers(x))[sapply(x@layers,function(X) {inMemory(X) } )]
+		all_filenames <- sapply(x@layers,function(X) { filename(X) } )
+		inMemory_layers <- (1:nlayers(x))[sapply(x@layers,function(X) { inMemory(X) } )]
 		
 		unique_filenames <- unique(all_filenames)
 		unique_getValuesBlock <- 

@@ -9,7 +9,7 @@
 #' 
 #' @param filename Character. The output base filename of the blank file.  Will use tempfile() if nothing is provided.
 #' @param format Character.  Output format.  Currently only supports "raster".
-#' @param dataType Character.  Output number type.  See ?dataType Currently only supports "FLT8S".  
+#' @param dataType Character.  Output number type.  See ?dataType. Currently only supports "FLT8S".  
 #' @param bandorder Character.  Output band interleave.  Currently only supports "BSQ".
 #' @param nrow Numeric. Number of rows of the output raster. Defaults to nrow(reference_raster).
 #' @param ncol Numeric. Number of columns of the output raster. Defaults to ncol(reference_raster).
@@ -30,12 +30,13 @@
 #' Binary files of this type are used by a number of raster formats, including raster and ENVI.
 #' 
 #' @author Jonathan A. Greenberg
-#' @examples
+#' @examples \dontrun{ 
 #' tahoe_highrez <- brick(system.file("external/tahoe_highrez.tif", package="spatial.tools"))
 #' test_blank_file <- create_blank_raster(reference_raster=tahoe_highrez)
 #' file.info(test_blank_file)
 #' test_blank_raster <- create_blank_raster(reference_raster=tahoe_highrez,return_filename=FALSE)
 #' test_blank_raster
+#' }
 #' @export
 create_blank_raster <- function(filename=NULL,
 	format="raster",dataType="FLT8S",bandorder="BSQ",
