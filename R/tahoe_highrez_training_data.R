@@ -14,4 +14,5 @@
 #' 	dsn=system.file("external", package="spatial.tools"),
 #' 	layer="tahoe_highrez_training_points_utm")
 #' print(projection(tahoe_highrez_training_points_utm))
+#' @import rgdal
 NULL

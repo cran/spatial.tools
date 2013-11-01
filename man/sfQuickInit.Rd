@@ -18,7 +18,7 @@
   with foreach.
 }
 \details{
-  (Even more) quickly start a parallel cluster with maximum
+  (Even more) quickly start a parallel cluster with half of
   available cpus, parallel = TRUE, and type = "SOCK" and
   registers it with foreach.
 }

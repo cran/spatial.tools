@@ -4,6 +4,7 @@
 #' @param allnames Logical. Make sure all subset_names are contained by x?
 #' @name subset_raster_by_names
 #' @author Jonathan A. Greenberg (\email{spatial.tools@@estarcion.net})
+#' @import raster
 #' @export
 
 subset_raster_by_names=function(x,subset_names,allnames=TRUE)

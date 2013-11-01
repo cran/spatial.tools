@@ -20,6 +20,8 @@
 #' Keep in mind this is a "dirty" parallel problem, so different chunks may execute at
 #' different speeds and have different memory footprints.
 #' 
+#' @import raster
+#' @import foreach
 #' @export
 
 projectRaster_rigorous <- function(from,to,method="mode",na.rm=FALSE,verbose=FALSE)

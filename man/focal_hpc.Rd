@@ -6,12 +6,14 @@
     window_center = c(ceiling(window_dims[1]/2), ceiling(window_dims[2]/2)),
     filename = NULL, overwrite = FALSE,
     outformat = "raster", chunk_format = "array",
-    minblocks = "max", blocksize = NULL, verbose = FALSE)
+    minblocks = "max", blocksize = NULL,
+    processing_unit = "chunk", outbands = NULL,
+    debugmode = FALSE, verbose = FALSE)
 }
 \arguments{
   \item{x}{Raster*. A Raster* used as the input into the
-  function.  Multiple inputs should be stack()'ed
-  together.}
+  function.  Multiple inputs should be stack()'ed or
+  list()'ed together.}
 
   \item{fun}{function. A focal function to be applied to
   the image. See Details.}
@@ -49,6 +51,20 @@
   \item{overwrite}{logical. Allow files to be overwritten?
   Default is FALSE.}
 
+  \item{processing_unit}{Character. ("single"|"chunk") Will
+  be auto-set if not specified ("chunk" for
+  pixel-processing, "single" for focal processing).  See
+  Description.}
+
+  \item{outbands}{Numeric. If known, how many bands in the
+  output file?  Assigning this will allow focal_hpc to skip
+  the pre-check.}
+
+  \item{debugmode}{Logical.  If TRUE, the function will
+  enter debug mode during the test phase.  Note the inputs
+  will be an array of size 2 columns, 1 row, and how ever
+  many input bands.}
+
   \item{verbose}{logical. Enable verbose execution? Default
   is FALSE.}
 }
@@ -71,6 +87,10 @@
   condition occurs), it will simply retry the writes until
   it successfully finishes.  On Unix-alikes, truly parallel
   writes should be possible.
+
+  Note that \code{\link{rasterEngine}} is a convienence
+  wrapper for focal_hpc and, in general, should be used
+  instead of focal_hpc directly.
 
   focal_hpc operates in two modes, which have different
   input and outputs to the function:
@@ -116,32 +136,33 @@
 \examples{
 tahoe_highrez <- brick(system.file("external/tahoe_highrez.tif", package="spatial.tools"))
 # Pixel-based processing:
-	ndvi_function <- function(x,...)
-	{
-		# Note that x is received by the function as a 3-d array:
-		red_band <- x[,,2]
-		nir_band <- x[,,3]
-		ndvi <- (nir_band - red_band)/(nir_band + red_band)
-		# The output of the function should also be a 3-d array,
-		# even if it is a single band:
-		ndvi <- array(ndvi,dim=c(dim(x)[1],dim(x)[2],1))
-		return(ndvi)
-	}
+ndvi_function <- function(x,...)
+{
+	# Note that x is received by the function as a 3-d array:
+	red_band <- x[,,2]
+	nir_band <- x[,,3]
+	ndvi <- (nir_band - red_band)/(nir_band + red_band)
+	# The output of the function should also be a 3-d array,
+	# even if it is a single band:
+	ndvi <- array(ndvi,dim=c(dim(x)[1],dim(x)[2],1))
+	return(ndvi)
+}
 
-	sfQuickInit(cpus=2)
- tahoe_ndvi <- focal_hpc(x=tahoe_highrez,fun=ndvi_function)
-	sfQuickStop()
+sfQuickInit(cpus=2)
+tahoe_ndvi <- focal_hpc(x=tahoe_highrez,fun=ndvi_function)
+sfQuickStop()
 
 \dontrun{
 # Focal-based processing:
 local_smoother <- function(x,...)
 {
- # Assumes a 3-d array representing
+	# Assumes a 3-d array representing
 	# a single local window, and return
- # a single value or a vector of values.
+	# a single value or a vector of values.
 	smoothed <- apply(x,3,mean)
 	return(smoothed)
 }
+
 # Apply the function to a 3x3 window:
 sfQuickInit(cpus=2)
 tahoe_3x3_smoothed <- focal_hpc(x=tahoe_highrez,fun=local_smoother,window_dims=c(3,3))
@@ -158,7 +179,8 @@ sfQuickStop()
   (\email{spatial.tools@estarcion.net})
 }
 \seealso{
-  \code{\link{foreach}}, \code{\link{mmap}},
-  \code{\link{dataType}}, \code{\link{hdr}}
+  \code{\link{rasterEngine}}, \code{\link{foreach}},
+  \code{\link{mmap}}, \code{\link{dataType}},
+  \code{\link{hdr}}
 }
 

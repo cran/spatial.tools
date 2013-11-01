@@ -10,6 +10,8 @@
 #' tahoe_highrez_list <- brickstack_to_raster_list(tahoe_highrez)
 #' tahoe_highrez_list
 #' # sfQuickStop()
+#' @import foreach foreach
+#' @import raster
 #' @export
 
 brickstack_to_raster_list <- function(x)

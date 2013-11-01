@@ -19,16 +19,15 @@
 #' dim(mychunk)
 #' mychunk_raster <- getValuesBlock_enhanced(tahoe_highrez,r1=100,r2=110,c1=20,c2=50,format="raster")
 #' mychunk_raster
+#' @import raster
 #' @export
 
-getValuesBlock_enhanced=function(x,r1=1,r2=nrow(x),c1=1,c2=ncol(x),lyrs=(1:nlayers(x)),format="array",...)
+getValuesBlock_enhanced=function(x,r1=1,r2=nrow(x),c1=1,c2=ncol(x),lyrs=seq(nlayers(x)),format="array",...)
 {	
 	if(format=="array")
 	{
 		layer_names=names(x)
-#		if(class(x)=="RasterStack")
 		getvalues_raw <- as.numeric(getValuesBlock_stackfix(x,row=r1,nrows=(r2-r1+1),col=c1,ncols=(c2-c1+1),lyrs=lyrs))		
-#		getvalues_raw=as.numeric(getValues(crop(x, extent(x, r1=r1, r2=r2, c1=c1,c2=c2))))
 		getvalues_raw_nrows=r2-r1+1
 		getvalues_raw_ncols=c2-c1+1
 		getvalues_raw_nlayers=nlayers(x)

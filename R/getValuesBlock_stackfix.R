@@ -24,7 +24,7 @@
 #' system.time(tahoe_highrez_extract <- getValuesBlock(tahoe_highrez_stack))
 #' # getValuesBlock_stackfix stack extraction:
 #' system.time(tahoe_highrez_extract <- getValuesBlock_stackfix(tahoe_highrez_stack))
-#' 
+#' @import raster
 #' @export
 
 getValuesBlock_stackfix <- function(x, row=1, nrows=1, col=1, ncols=(ncol(x)-col+1), lyrs=(1:nlayers(x)))
@@ -59,7 +59,7 @@ getValuesBlock_stackfix <- function(x, row=1, nrows=1, col=1, ncols=(ncol(x)-col
 		return(out_matrix)
 	} else
 	{
-		if(class(x)=="RasterLayer")
+		if(class(x)=="RasterLayer" || nlayers(x)==1)
 			return(getValuesBlock(x, row=row, nrows=nrows, col=col, ncols=ncols))
 		else
 			return(getValuesBlock(x, row=row, nrows=nrows, col=col, ncols=ncols, lyrs=lyrs))

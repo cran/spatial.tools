@@ -3,7 +3,7 @@
 \title{Easier-to-use function for grabbing a block of data out of a Raster*.}
 \usage{
   getValuesBlock_enhanced(x, r1 = 1, r2 = nrow(x), c1 = 1,
-    c2 = ncol(x), lyrs = (1:nlayers(x)), format = "array",
+    c2 = ncol(x), lyrs = seq(nlayers(x)), format = "array",
     ...)
 }
 \arguments{

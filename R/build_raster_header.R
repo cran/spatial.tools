@@ -19,6 +19,7 @@
 #' 	dataType='FLT8S',format='raster',bandorder="BSQ",setMinMax=TRUE)
 #' test_blank_raster
 #' }
+#' @import raster
 #' @export
 
 build_raster_header <- function(x_filename,reference_raster,out_nlayers,

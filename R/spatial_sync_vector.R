@@ -15,6 +15,7 @@
 #' tahoe_highrez_training_points_utm_synced <- 
 #' 	spatial_sync_vector(tahoe_highrez_training_points_utm,tahoe_lidar_bareearth)
 #' print(projection(tahoe_highrez_training_points_utm_synced))
+#' @import rgdal
 #' @export
 
 spatial_sync_vector <- function(unsynced,reference,verbose=TRUE)

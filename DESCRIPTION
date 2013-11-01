@@ -5,13 +5,15 @@ Title: R functions for working with spatial data.
 Type: Package
 LazyLoad: yes
 Author: Jonathan Asher Greenberg
-Description: Spatial functions meant to enhance the core functionality
-        of the package "raster", including a parallel processing engine
-        for use with rasters.
-Version: 1.0.6
-Date: 2013-06-06
-Depends: raster, rgdal, sp, mmap, abind, parallel, foreach, doParallel,
-        rgeos, R (>= 2.15.3)
+Description: Spatial functions meant to enhance the core functionality of the
+    package "raster", including a parallel processing engine for use with
+    rasters.
+Version: 1.2.1
+Date: 2013-11-01
+URL:
+        http://www.geog.illinois.edu/~jgrn/software-and-datasets/rasterengine-tutorial/
+Depends: parallel, iterators, foreach, rgdal, raster, R (>= 3.0.2)
+Imports: mmap, abind, doParallel
 Collate: 'spatial_sync_vector.R' 'tahoe_highrez_data.R'
         'tahoe_highrez_training_data.R' 'tahoe_lidar_bareearth_data.R'
         'tahoe_lidar_highesthit_data.R' 'remove_file_extension.R'
@@ -19,13 +21,12 @@ Collate: 'spatial_sync_vector.R' 'tahoe_highrez_data.R'
         'spatial_sync_raster.R' 'binary_image_write.R' 'focal_hpc.R'
         'getValuesBlock_enhanced.R' 'which_simple.R'
         'subset_raster_by_names.R' 'sfQuickInit.R'
-        'create_blank_raster.R' 'sfQuickStop.R'
-        'get_gdal_installation.R' 'is.Raster.R'
-        'bbox_to_SpatialPolygons.R' 'brickstack_to_raster_list.R'
-        'getValuesBlock_stackfix.R' 'modify_raster_margins.R'
-        'modis_hdf4_subdatasets.R' 'projectRaster_rigorous.R'
-        'Rgdal_translate.R' 'by.Raster.R'
-Packaged: 2013-06-06 15:22:25 UTC; jgrn307
+        'create_blank_raster.R' 'sfQuickStop.R' 'is.Raster.R'
+        'raster_to_filenames.R' 'bbox_to_SpatialPolygons.R'
+        'brickstack_to_raster_list.R' 'getValuesBlock_stackfix.R'
+        'modify_raster_margins.R' 'projectRaster_rigorous.R'
+        'rasterEngine.R' 'list.raster.files.R'
+Packaged: 2013-11-01 15:21:16 UTC; jgrn307
 NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2013-06-08 18:00:41
+Date/Publication: 2013-11-02 17:51:52

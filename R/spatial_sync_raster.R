@@ -20,6 +20,7 @@
 #' @return Returns a RasterLayer, RasterBrick or RasterStack object synced to
 #' the reference raster object.
 #' @author Jonathan A. Greenberg (\email{spatial.tools@@estarcion.net})
+#' @import raster
 #' @export
 spatial_sync_raster <- function(unsynced,reference,method="ngb",
 	size_only=FALSE,raster_size,verbose=FALSE,...)

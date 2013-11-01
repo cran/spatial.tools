@@ -37,6 +37,7 @@
 #' test_blank_raster <- create_blank_raster(reference_raster=tahoe_highrez,return_filename=FALSE)
 #' test_blank_raster
 #' }
+#' @import raster
 #' @export
 create_blank_raster <- function(filename=NULL,
 	format="raster",dataType="FLT8S",bandorder="BSQ",

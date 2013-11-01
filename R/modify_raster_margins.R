@@ -19,6 +19,7 @@
 #' # Add two rows to the top and left of the raster, and fill with the value 100.
 #' tahoe_highrez_expand <- modify_raster_margins(x=tahoe_highrez,extent_delta=c(2,0,2,0),value=100)
 #' dim(tahoe_highrez_expand)
+#' @import raster
 #' @export
 
 modify_raster_margins <- function(x,extent_delta=c(0,0,0,0),value=NA)
@@ -53,7 +54,7 @@ modify_raster_margins <- function(x,extent_delta=c(0,0,0,0),value=NA)
 		ul_mod[ul_mod < 0] <- 0
 		lr_mod <- extent_delta[c(2,4)] * res_x
 		lr_mod[lr_mod < 0] <- 0
-		
+#		Again, a hack for CRAN?		
 #		extend_extent <- as.vector(x_extents)
 		extend_extent <- c(x_extents@xmin,x_extents@xmax,x_extents@ymin,x_extents@ymax)
 		extend_extent[c(1,3)] <- extend_extent[c(1,3)] - ul_mod

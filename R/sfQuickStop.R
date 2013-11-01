@@ -7,13 +7,16 @@
 #' @examples
 #' sfQuickInit(cpus=2)
 #' sfQuickStop()
+#' @import parallel
+#' @import foreach
 #' @export
 
 sfQuickStop <- function(...)
 {
-	cl <- parallel:::defaultCluster()
+	cl <- getOption("spatial.tools.current.cl")
 	registerDoSEQ()
 	stopCluster(cl)
+	options(spatial.tools.current.cl=NULL)
 }
 
 

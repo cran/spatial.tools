@@ -10,6 +10,7 @@
 #' 	raster(system.file("external/tahoe_lidar_bareearth.tif", package="spatial.tools"))
 #' is.Raster(tahoe_lidar_bareearth)
 #' is.Raster("character")
+#' @import raster
 #' @export
 
 is.Raster <- function(x)
