@@ -2,8 +2,8 @@
 \alias{getValuesBlock_stackfix}
 \title{Get a block of raster cell values (optimization fix for RasterStacks)}
 \usage{
-  getValuesBlock_stackfix(x, row = 1, nrows = 1, col = 1,
-    ncols = (ncol(x) - col + 1), lyrs = (1:nlayers(x)))
+getValuesBlock_stackfix(x, row = 1, nrows = 1, col = 1, ncols = (ncol(x)
+  - col + 1), lyrs = (1:nlayers(x)))
 }
 \arguments{
   \item{x}{Raster* object}
@@ -24,18 +24,18 @@
   all layers (1:nlayers(x))}
 }
 \value{
-  matrix or vector (if (x=RasterLayer), unless
-  format='matrix')
+matrix or vector (if (x=RasterLayer), unless
+format='matrix')
 }
 \description{
-  A faster version of getValuesBlock for RasterStack.
+A faster version of getValuesBlock for RasterStack.
 }
 \details{
-  In certain cases, getValuesBlock may run very slowly on a
-  RasterStack, particularly when the RasterStack is
-  comprised of RasterBricks.  This code attempts to fix the
-  inefficiency by running the extract on each unique file
-  of the RasterStack, rather than each unique layer.
+In certain cases, getValuesBlock may run very slowly on a
+RasterStack, particularly when the RasterStack is comprised
+of RasterBricks.  This code attempts to fix the
+inefficiency by running the extract on each unique file of
+the RasterStack, rather than each unique layer.
 }
 \examples{
 tahoe_highrez <- brick(system.file("external/tahoe_highrez.tif", package="spatial.tools"))
@@ -46,9 +46,9 @@ system.time(tahoe_highrez_extract <- getValuesBlock(tahoe_highrez_stack))
 system.time(tahoe_highrez_extract <- getValuesBlock_stackfix(tahoe_highrez_stack))
 }
 \author{
-  Jonathan A. Greenberg
+Jonathan A. Greenberg
 }
 \seealso{
-  \code{\link[raster]{getValuesBlock}}
+\code{\link[raster]{getValuesBlock}}
 }
 

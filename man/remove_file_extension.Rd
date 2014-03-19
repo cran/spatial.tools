@@ -2,8 +2,7 @@
 \alias{remove_file_extension}
 \title{remove_file_extension}
 \usage{
-  remove_file_extension(filename,
-    extension_delimiter = ".")
+remove_file_extension(filename, extension_delimiter = ".")
 }
 \arguments{
   \item{filename}{Character. The input filename.}
@@ -12,7 +11,7 @@
   extension delimiter (default ".") to remove.}
 }
 \description{
-  Strips a file extension from a filename.
+Strips a file extension from a filename.
 }
 \examples{
 myfilename="my.file.gri"
@@ -20,6 +19,6 @@ remove_file_extension(myfilename,".")
 remove_file_extension(myfilename,".file.gri")
 }
 \author{
-  Jonathan A. Greenberg \email{spatial.tools@estarcion.net}
+Jonathan A. Greenberg \email{spatial.tools@estarcion.net}
 }
 

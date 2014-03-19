@@ -2,7 +2,7 @@
 \alias{which.min.simple}
 \title{Location of Minimum Value}
 \usage{
-  which.min.simple(x, na.rm = TRUE, tie_value = "NA")
+which.min.simple(x, na.rm = TRUE, tie_value = "NA")
 }
 \arguments{
   \item{x}{a numeric object}
@@ -17,12 +17,12 @@
   class found).}
 }
 \value{
-  An integer of length 1 giving the index of the minimum of
-  x or NA if the minimum of x is not unique, x has no
-  non-NAs, or na.rm=F.
+An integer of length 1 giving the index of the minimum of x
+or NA if the minimum of x is not unique, x has no non-NAs,
+or na.rm=F.
 }
 \description{
-  Locates the smallest value of the input object.
+Locates the smallest value of the input object.
 }
 \examples{
 \dontrun{
@@ -37,11 +37,11 @@ which.min.simple(x,na.rm=FALSE)
 }
 }
 \author{
-  Jonathan A. Greenberg, Alison R. Mynsberge
+Jonathan A. Greenberg, Alison R. Mynsberge
 }
 \seealso{
-  \code{\link[base]{which.min}}, \code{\link[base]{which}},
-  \code{\link[base]{min}}
+\code{\link[base]{which.min}}, \code{\link[base]{which}},
+\code{\link[base]{min}}
 }
 \keyword{calculate}
 

@@ -1,0 +1,92 @@
+\name{predict_rasterEngine}
+\alias{predict_rasterEngine}
+\title{Model predictions (including Raster* objects)}
+\usage{
+predict_rasterEngine(object, ...)
+}
+\arguments{
+  \item{object}{a model object for which prediction is
+  desired.}
+
+  \item{...}{additional arguments affecting the predictions
+  produced.}
+}
+\description{
+Model predictions (including Raster* objects)
+}
+\details{
+predict will operate normally, unless a parameter named
+"newdata" is found and it is of class Raster*.  If this
+occurs, predict will use rasterEngine to perform a
+prediction.  Currently, this works for predict.* statements
+in which the data to predict on is called by the parameter
+"newdata", the input data is in the form of a data.frame,
+and the output is a vector or matrix of numbers or factors.
+
+predict will run in parallel if a cluster is registered
+with foreach via a do* statement, or if the user uses
+sfQuickInit().
+}
+\examples{
+# This example creates a linear model relating a vegetation
+# index (NDVI) to vegetation height, and applies it to a raster
+# of NDVI.
+
+# Load up a 3-band image:
+tahoe_highrez <- setMinMax(
+		brick(system.file("external/tahoe_highrez.tif", package="spatial.tools")))
+
+# Determine NDVI
+ndvi_nodrop <- function(GRNIR_image)
+{
+	red_band <- GRNIR_image[,,2,drop=FALSE]
+	nir_band <- GRNIR_image[,,3,drop=FALSE]
+	ndvi <- (nir_band-red_band)/(nir_band + red_band)
+	return(ndvi)
+}
+
+tahoe_ndvi <- rasterEngine(GRNIR_image=tahoe_highrez,fun=ndvi_nodrop)
+names(tahoe_ndvi) <- "ndvi"
+
+# Load up Lidar files
+tahoe_lidar_highesthit <- setMinMax(
+		raster(system.file("external/tahoe_lidar_highesthit.tif", package="spatial.tools")))
+
+tahoe_lidar_bareearth <- setMinMax(
+		raster(system.file("external/tahoe_lidar_bareearth.tif", package="spatial.tools")))
+
+# Determine vegetation height:
+LIDAR_height <- function(bareearth,firstreturn)
+{
+	height <- firstreturn-bareearth
+	return(height)
+}
+
+tahoe_height <- rasterEngine(
+		bareearth=tahoe_lidar_bareearth,
+		firstreturn=tahoe_lidar_highesthit,
+		fun=LIDAR_height)
+names(tahoe_height) <- "vegetation_height"
+
+# Stack them:
+tahoe_analysis_stack <- stack(tahoe_ndvi,tahoe_height)
+
+# Pick some random points from the stack
+randomly_extracted_data <- as.data.frame(sampleRandom(tahoe_analysis_stack,size=100))
+
+# Generate a linear model from these points:
+height_from_ndvi_model <- lm(vegetation_height~ndvi,data=randomly_extracted_data)
+
+# Apply model to NDVI image:
+# Enable parallel engine to run larger images faster:
+# sfQuickInit()
+height_from_ndvi_raster <- predict_rasterEngine(object=height_from_ndvi_model,newdata=tahoe_ndvi)
+# sfQuickStop()
+}
+\author{
+Jonathan A. Greenberg (\email{spatial.tools@estarcion.net})
+}
+\seealso{
+\code{\link{predict}}
+}
+

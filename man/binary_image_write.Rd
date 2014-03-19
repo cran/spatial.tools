@@ -2,8 +2,8 @@
 \alias{binary_image_write}
 \title{Writes image data to a flat binary file using col/row/band positioning.}
 \usage{
-  binary_image_write(filename, mode = real64(), image_dims,
-    interleave = "BSQ", data, data_position)
+binary_image_write(filename, mode = real64(), image_dims,
+  interleave = "BSQ", data, data_position)
 }
 \arguments{
   \item{filename}{Character.  The path and filename of a
@@ -28,12 +28,9 @@
   the column, row, and band positions ranges to write the
   output data.}
 }
-\value{
-  NULL
-}
 \description{
-  Writes image data to a flat binary file using
-  col/row/band positioning.
+Writes image data to a flat binary file using col/row/band
+positioning.
 }
 \examples{
 \dontrun{
@@ -58,10 +55,10 @@ plot(raster(blank_raster,layer=1))
 }
 }
 \author{
-  Jonathan A. Greenberg
+Jonathan A. Greenberg
 }
 \seealso{
-  \code{\link[mmap]{mmap}},\code{\link[spatial.tools]{create_blank_raster}}
+\code{\link[mmap]{mmap}},\code{\link[spatial.tools]{create_blank_raster}}
 }
 \keyword{mmap}
 

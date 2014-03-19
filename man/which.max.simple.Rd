@@ -2,7 +2,7 @@
 \alias{which.max.simple}
 \title{Location of Maximum Value}
 \usage{
-  which.max.simple(x, na.rm = TRUE, tie_value = "NA")
+which.max.simple(x, na.rm = TRUE, tie_value = "NA")
 }
 \arguments{
   \item{x}{a numeric object}
@@ -17,12 +17,12 @@
   class found).}
 }
 \value{
-  An integer of length 1 giving the index of the maximum of
-  x or NA if the maximum of x is not unique, x has no
-  non-NAs, or na.rm=F.
+An integer of length 1 giving the index of the maximum of x
+or NA if the maximum of x is not unique, x has no non-NAs,
+or na.rm=F.
 }
 \description{
-  Locates the largest value of the input object.
+Locates the largest value of the input object.
 }
 \examples{
 \dontrun{
@@ -37,11 +37,11 @@ which.max.simple(x,na.rm=FALSE)
 }
 }
 \author{
-  Jonathan A. Greenberg, Alison R. Mynsberge
+Jonathan A. Greenberg, Alison R. Mynsberge
 }
 \seealso{
-  \code{\link[base]{which.max}}, \code{\link[base]{which}},
-  \code{\link[base]{max}}
+\code{\link[base]{which.max}}, \code{\link[base]{which}},
+\code{\link[base]{max}}
 }
 \keyword{calculate}
 

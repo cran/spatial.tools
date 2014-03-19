@@ -2,7 +2,7 @@
 \alias{raster_to_filenames}
 \title{Extract filenames from all Raster* objects.}
 \usage{
-  raster_to_filenames(x, unique = FALSE)
+raster_to_filenames(x, unique = FALSE)
 }
 \arguments{
   \item{x}{Raster*.  A Raster* object (even one without
@@ -12,16 +12,15 @@
   FALSE, one filename per layer.}
 }
 \value{
-  Character vector of filenames.
+Character vector of filenames.
 }
 \description{
-  Extract filenames from all Raster* objects.
+Extract filenames from all Raster* objects.
 }
 \details{
-  This is an expansion of filename() that allows for
-  RasterStacks, in-memory Raster*s, and Raster*s without
-  values.  If a filename is not found, the entry will be
-  "".
+This is an expansion of filename() that allows for
+RasterStacks, in-memory Raster*s, and Raster*s without
+values.  If a filename is not found, the entry will be "".
 }
 \examples{
 {
@@ -33,9 +32,9 @@ raster_to_filenames(nodata)
 }
 }
 \author{
-  Jonathan A. Greenberg
+Jonathan A. Greenberg
 }
 \seealso{
-  \code{\link[raster]{filename}}
+\code{\link[raster]{filename}}
 }
 

@@ -38,6 +38,13 @@ binary_image_write=function(filename,mode=real64(),image_dims,interleave="BSQ",
 	data,data_position)
 {
 	
+	if(is.character(mode))
+	{
+		mode = 
+				#spatial.tools:::
+		dataType_converter(from=mode)
+	}
+	
 	# data_position should be of format rbind(col_pos,row_pos,band_pos)
 	# UL corner is 1,1,1
 	

@@ -2,7 +2,7 @@
 \alias{spatial_sync_vector}
 \title{Matches a vector's projection to another vector or raster object's projection.}
 \usage{
-  spatial_sync_vector(unsynced, reference, verbose = TRUE)
+spatial_sync_vector(unsynced, reference, verbose = TRUE)
 }
 \arguments{
   \item{unsynced}{The vector to be projected.}
@@ -13,8 +13,8 @@
   \item{verbose}{Logical. Verbose logging?}
 }
 \description{
-  Matches a vector's projection to another vector or raster
-  object's projection.
+Matches a vector's projection to another vector or raster
+object's projection.
 }
 \examples{
 tahoe_highrez_training_points_utm <- readOGR(
@@ -29,7 +29,6 @@ tahoe_highrez_training_points_utm_synced <-
 print(projection(tahoe_highrez_training_points_utm_synced))
 }
 \author{
-  Jonathan A. Greenberg
-  (\email{spatial.tools@estarcion.net})
+Jonathan A. Greenberg (\email{spatial.tools@estarcion.net})
 }
 

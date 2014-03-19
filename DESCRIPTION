@@ -8,25 +8,13 @@ Author: Jonathan Asher Greenberg
 Description: Spatial functions meant to enhance the core functionality of the
     package "raster", including a parallel processing engine for use with
     rasters.
-Version: 1.2.1
-Date: 2013-11-01
+Version: 1.3.8
+Date: 2014-3-19
 URL:
         http://www.geog.illinois.edu/~jgrn/software-and-datasets/rasterengine-tutorial/
-Depends: parallel, iterators, foreach, rgdal, raster, R (>= 3.0.2)
-Imports: mmap, abind, doParallel
-Collate: 'spatial_sync_vector.R' 'tahoe_highrez_data.R'
-        'tahoe_highrez_training_data.R' 'tahoe_lidar_bareearth_data.R'
-        'tahoe_lidar_highesthit_data.R' 'remove_file_extension.R'
-        'build_raster_header.R' 'fix_extent.R' 'add_leading_zeroes.R'
-        'spatial_sync_raster.R' 'binary_image_write.R' 'focal_hpc.R'
-        'getValuesBlock_enhanced.R' 'which_simple.R'
-        'subset_raster_by_names.R' 'sfQuickInit.R'
-        'create_blank_raster.R' 'sfQuickStop.R' 'is.Raster.R'
-        'raster_to_filenames.R' 'bbox_to_SpatialPolygons.R'
-        'brickstack_to_raster_list.R' 'getValuesBlock_stackfix.R'
-        'modify_raster_margins.R' 'projectRaster_rigorous.R'
-        'rasterEngine.R' 'list.raster.files.R'
-Packaged: 2013-11-01 15:21:16 UTC; jgrn307
+Depends: parallel, iterators, foreach, rgdal, raster, R (>= 2.14.0)
+Imports: mmap, abind, doParallel, compiler
+Packaged: 2014-03-20 01:55:38 UTC; jgrn307
 NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2013-11-02 17:51:52
+Date/Publication: 2014-03-20 07:33:28

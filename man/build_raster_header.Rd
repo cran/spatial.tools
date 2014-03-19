@@ -2,9 +2,9 @@
 \alias{build_raster_header}
 \title{Builds a raster header for a flat binary file.}
 \usage{
-  build_raster_header(x_filename, reference_raster,
-    out_nlayers, dataType = "FLT8S", format = "raster",
-    bandorder = "BSQ", setMinMax = FALSE, verbose = FALSE)
+build_raster_header(x_filename, reference_raster, out_nlayers,
+  dataType = "FLT8S", format = "raster", bandorder = "BSQ",
+  setMinMax = FALSE, verbose = FALSE)
 }
 \arguments{
   \item{x_filename}{Character. The filename of the input
@@ -35,7 +35,7 @@
   is FALSE.}
 }
 \description{
-  Builds a raster header for a flat binary file.
+Builds a raster header for a flat binary file.
 }
 \examples{
 \dontrun{
@@ -50,10 +50,10 @@ test_blank_raster
 }
 }
 \author{
-  Jonathan A. Greenberg and Robert Hijimans
-  (\email{spatial.tools@estarcion.net})
+Jonathan A. Greenberg and Robert Hijimans
+(\email{spatial.tools@estarcion.net})
 }
 \seealso{
-  \code{\link{hdr}},\code{\link{dataType}}
+\code{\link{hdr}},\code{\link{dataType}}
 }
 

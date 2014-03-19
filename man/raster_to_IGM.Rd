@@ -1,0 +1,35 @@
+\name{raster_to_IGM}
+\alias{raster_to_IGM}
+\title{Creates an input geometry (IGM) file from a raster}
+\usage{
+raster_to_IGM(x)
+}
+\arguments{
+  \item{x}{Raster* The raster containing the geographic
+  information to be used as the basis for the IGM.}
+}
+\description{
+Creates an input geometry (IGM) file from a raster
+}
+\details{
+This function produces a two-band brick where the pixel
+values for the first band are the geographic x-coordinates,
+and the pixel values for the second band are the geographic
+y-coordinates of the corresponding pixels in the input
+Raster* file.
+}
+\examples{
+tahoe_lidar_highesthit <-
+	raster(system.file("external/tahoe_lidar_highesthit.tif", package="spatial.tools"))
+tahoe_lidar_highesthit_igm <- raster_to_IGM(tahoe_lidar_highesthit)
+plot(tahoe_lidar_highesthit_igm)
+setMinMax(tahoe_lidar_highesthit_igm)
+}
+\author{
+Jonathan A. Greenberg
+}
+\seealso{
+\code{\link[raster]{xyFromCell}},
+\code{\link[raster]{cellFromRow}}
+}
+

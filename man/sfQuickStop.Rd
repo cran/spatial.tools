@@ -2,24 +2,28 @@
 \alias{sfQuickStop}
 \title{Quickly stops a parallel snowfall cluster and deregisters it from foreach.}
 \usage{
-  sfQuickStop(...)
+sfQuickStop(kill = FALSE, ...)
 }
 \arguments{
+  \item{kill}{Logical.  If TRUE, attempt to force-quit
+  cluster if you get an out-of-control situation.
+  Default=FALSE.}
+
   \item{...}{parameters to pass to sfStop()}
 }
 \description{
-  Quickly stops a parallel snowfall cluster and deregisters
-  it from foreach.
+Quickly stops a parallel snowfall cluster and deregisters
+it from foreach.
 }
 \details{
-  (Even more) quickly stop a snowfall cluster and sets
-  foreach back to sequential mode via registerDoSEQ().
+(Even more) quickly stop a snowfall cluster and sets
+foreach back to sequential mode via registerDoSEQ().
 }
 \examples{
 sfQuickInit(cpus=2)
 sfQuickStop()
 }
 \author{
-  Jonathan A. Greenberg
+Jonathan A. Greenberg
 }
 

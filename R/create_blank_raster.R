@@ -9,7 +9,7 @@
 #' 
 #' @param filename Character. The output base filename of the blank file.  Will use tempfile() if nothing is provided.
 #' @param format Character.  Output format.  Currently only supports "raster".
-#' @param dataType Character.  Output number type.  See ?dataType. Currently only supports "FLT8S".  
+#' @param dataType Character.  Output number type.  See ?dataType.  Default is "FLT8S".  
 #' @param bandorder Character.  Output band interleave.  Currently only supports "BSQ".
 #' @param nrow Numeric. Number of rows of the output raster. Defaults to nrow(reference_raster).
 #' @param ncol Numeric. Number of columns of the output raster. Defaults to ncol(reference_raster).
@@ -39,6 +39,7 @@
 #' }
 #' @import raster
 #' @export
+
 create_blank_raster <- function(filename=NULL,
 	format="raster",dataType="FLT8S",bandorder="BSQ",
 	nrow=NULL,ncol=NULL,nlayers=NULL,
@@ -59,8 +60,13 @@ create_blank_raster <- function(filename=NULL,
 		if(verbose) { message(paste("No output file given, using a tempfile name:",filename,sep=" ")) }
 		if(!file.exists(tempdir())) dir.create(tempdir())
 	} 
+
+	numBytes = dataSize(dataType)
 	
-	if(dataType=="FLT8S") numBytes = 8
+#	numBytes = substr(dataType,4,4)
+	
+#	if(dataType=="FLT4S") numBytes = 4 # Single Precision Floating Point
+#	if(dataType=="FLT8S") numBytes = 8 # Double Precision Floating Point
 	
 	# I've been warned about using seek on Windows, but this appears to work...
 	if(verbose) { message("Creating empty file.") }
@@ -75,7 +81,12 @@ create_blank_raster <- function(filename=NULL,
 		if(verbose) { message("Setting up output header.") }
 		if(nlayers > 1) 
 		{ 
-			reference_raster=brick(raster(reference_raster,layer=1),nl=nlayers) 
+#			if(nlayers(reference_raster) > 1) { 
+			reference_raster=brick(raster(reference_raster),nl=nlayers) 
+#			} else
+#			{
+#				reference_raster <- brick(raster(reference_raster),nl=nlayers) 
+#			}
 		} else
 		{
 			if(nlayers(reference_raster) > 1) { 

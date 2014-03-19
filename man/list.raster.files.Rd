@@ -2,10 +2,9 @@
 \alias{list.raster.files}
 \title{Spiders a directory for raster files.}
 \usage{
-  list.raster.files(path = ".", pattern = NULL,
-    recursive = FALSE, return_rasters = FALSE,
-    return_bbox = TRUE,
-    bbox_CRS = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
+list.raster.files(path = ".", pattern = NULL, recursive = FALSE,
+  return_rasters = FALSE, return_bbox = TRUE,
+  bbox_CRS = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
 }
 \arguments{
   \item{path}{Character. The path to search for raster
@@ -28,24 +27,23 @@
   the output bbox SpatialPolygonsDataFrame should be in.}
 }
 \value{
-  A list of filenames (return_rasters=FALSE) or a list of
-  RasterBricks (return_rasters=TRUE) and/or a
-  SpatialPolygonsDataFrame of the bounding boxes
-  (return_bbox==TRUE).
+A list of filenames (return_rasters=FALSE) or a list of
+RasterBricks (return_rasters=TRUE) and/or a
+SpatialPolygonsDataFrame of the bounding boxes
+(return_bbox==TRUE).
 }
 \description{
-  Spiders a directory for raster files.
+Spiders a directory for raster files.
 }
 \details{
-  This function searches through a path (potentially
-  recursively), and returns the filename and/or a brick for
-  each file that can be coerced safely to a RasterBrick
-  object.  Note that given different flavors of GDAL, this
-  may return different results for the same directory on
-  different computers.  If a foreach parallel backend has
-  been registered, the spidering will use parallel
-  processing to check each file, potentially speeding it
-  up.
+This function searches through a path (potentially
+recursively), and returns the filename and/or a brick for
+each file that can be coerced safely to a RasterBrick
+object.  Note that given different flavors of GDAL, this
+may return different results for the same directory on
+different computers.  If a foreach parallel backend has
+been registered, the spidering will use parallel processing
+to check each file, potentially speeding it up.
 }
 \examples{
 {
@@ -57,9 +55,9 @@ list.raster.files(path=search_folder,return_rasters=TRUE)
 }
 }
 \author{
-  Jonathan A. Greenberg
+Jonathan A. Greenberg
 }
 \seealso{
-  \code{\link[raster]{brick}},\code{\link[base]{list.files}}
+\code{\link[raster]{brick}},\code{\link[base]{list.files}}
 }
 

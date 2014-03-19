@@ -2,11 +2,10 @@
 \alias{create_blank_raster}
 \title{Create an empty raster and header.}
 \usage{
-  create_blank_raster(filename = NULL, format = "raster",
-    dataType = "FLT8S", bandorder = "BSQ", nrow = NULL,
-    ncol = NULL, nlayers = NULL, create_header = TRUE,
-    reference_raster = NULL, return_filename = TRUE,
-    overwrite = FALSE, verbose = FALSE)
+create_blank_raster(filename = NULL, format = "raster",
+  dataType = "FLT8S", bandorder = "BSQ", nrow = NULL, ncol = NULL,
+  nlayers = NULL, create_header = TRUE, reference_raster = NULL,
+  return_filename = TRUE, overwrite = FALSE, verbose = FALSE)
 }
 \arguments{
   \item{filename}{Character. The output base filename of
@@ -17,7 +16,7 @@
   supports "raster".}
 
   \item{dataType}{Character.  Output number type.  See
-  ?dataType. Currently only supports "FLT8S".}
+  ?dataType.  Default is "FLT8S".}
 
   \item{bandorder}{Character.  Output band interleave.
   Currently only supports "BSQ".}
@@ -49,30 +48,29 @@
   is FALSE.}
 }
 \value{
-  A character vector (return_filename==TRUE) or as Raster*
-  object (return_filename==TRUE)
+A character vector (return_filename==TRUE) or as Raster*
+object (return_filename==TRUE)
 }
 \description{
-  This function creates an arbitrarily large raster as a
-  flat binary file with (optionally) a proper header for
-  use with other functions.  This should create the blank
-  files very quickly, as it is using some OS tricks to
-  carve out a block of space rather than writing a bunch of
-  0s to disk sequentially.
+This function creates an arbitrarily large raster as a flat
+binary file with (optionally) a proper header for use with
+other functions.  This should create the blank files very
+quickly, as it is using some OS tricks to carve out a block
+of space rather than writing a bunch of 0s to disk
+sequentially.
 }
 \details{
-  create_blank_raster is designed to quickly create a
-  binary file of the appropriate size using tricks with
-  seek()/writeBin(). A large file can be created in a
-  fraction of a second using this function. This file
-  could, for example, be used with mmap to realize
-  asynchronous or, OS permitting, parallel writes to a
-  single file.  Note that setMinMax are NOT performed on
-  the output file (to save time), so on some systems you
-  may see a warning.
+create_blank_raster is designed to quickly create a binary
+file of the appropriate size using tricks with
+seek()/writeBin(). A large file can be created in a
+fraction of a second using this function. This file could,
+for example, be used with mmap to realize asynchronous or,
+OS permitting, parallel writes to a single file.  Note that
+setMinMax are NOT performed on the output file (to save
+time), so on some systems you may see a warning.
 
-  Binary files of this type are used by a number of raster
-  formats, including raster and ENVI.
+Binary files of this type are used by a number of raster
+formats, including raster and ENVI.
 }
 \examples{
 \dontrun{
@@ -84,6 +82,6 @@ test_blank_raster
 }
 }
 \author{
-  Jonathan A. Greenberg
+Jonathan A. Greenberg
 }
 

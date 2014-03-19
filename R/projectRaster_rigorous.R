@@ -5,6 +5,7 @@
 #' @param method Character. Default is "mode". See details.
 #' @param na.rm Logical. Remove NAs before calculating cell stats?
 #' @param verbose logical. Enable verbose execution? Default is FALSE.  
+#' @param ... Currently unsupported.
 #' @author Jonathan A. Greenberg
 #' @seealso \code{\link[raster]{projectRaster}}, \code{\link[raster]{extract}}, \code{\link[raster]{aggregate}}
 #' @details This function is designed to solve the problem of resampling/reprojecting rasters
@@ -24,11 +25,13 @@
 #' @import foreach
 #' @export
 
-projectRaster_rigorous <- function(from,to,method="mode",na.rm=FALSE,verbose=FALSE)
+projectRaster_rigorous <- function(from,to,method="mode",na.rm=FALSE,verbose=FALSE,...)
 {
 	chunk_function <- function(x,from,method,na.rm,...)
 	{
 #		gc()
+		if(class(from)!="RasterLayer") stop("Currently, from= must be a RasterLayer.")
+		
 		# This should be changed and the polys made "manually":
 		chunk_vector <- rasterToPolygons(x,na.rm=FALSE,n=16)
 		chunk_vector_reproject <- spTransform(chunk_vector,CRS(projection(from)))
@@ -71,5 +74,5 @@ projectRaster_rigorous <- function(from,to,method="mode",na.rm=FALSE,verbose=FAL
 	}
 	
 	return(focal_hpc(x=x,fun=chunk_function,args=list(from=from,method=method,na.rm=na.rm),
-					chunk_format="raster",blocksize=1,verbose=verbose))
+					chunk_format="raster",blocksize=1,verbose=verbose,...))
 }

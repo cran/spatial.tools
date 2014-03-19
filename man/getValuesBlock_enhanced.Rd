@@ -2,9 +2,8 @@
 \alias{getValuesBlock_enhanced}
 \title{Easier-to-use function for grabbing a block of data out of a Raster*.}
 \usage{
-  getValuesBlock_enhanced(x, r1 = 1, r2 = nrow(x), c1 = 1,
-    c2 = ncol(x), lyrs = seq(nlayers(x)), format = "array",
-    ...)
+getValuesBlock_enhanced(x, r1 = 1, r2 = nrow(x), c1 = 1, c2 = ncol(x),
+  lyrs = seq(nlayers(x)), format = "array", ...)
 }
 \arguments{
   \item{x}{Raster* Some input Raster* object.}
@@ -28,11 +27,11 @@
   \item{...}{Other parameters.}
 }
 \value{
-  An array or raster object.
+An array or raster object.
 }
 \description{
-  Easier-to-use function for grabbing a block of data out
-  of a Raster*.
+Easier-to-use function for grabbing a block of data out of
+a Raster*.
 }
 \examples{
 tahoe_highrez <- brick(system.file("external/tahoe_highrez.tif", package="spatial.tools"))
@@ -43,9 +42,9 @@ mychunk_raster <- getValuesBlock_enhanced(tahoe_highrez,r1=100,r2=110,c1=20,c2=5
 mychunk_raster
 }
 \author{
-  Jonathan A. Greenberg
+Jonathan A. Greenberg
 }
 \seealso{
-  \code{\link[raster]{getValues}}
+\code{\link[raster]{getValues}}
 }
 

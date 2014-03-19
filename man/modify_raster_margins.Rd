@@ -2,8 +2,7 @@
 \alias{modify_raster_margins}
 \title{Add/subtract rows and columns from Raster*}
 \usage{
-  modify_raster_margins(x, extent_delta = c(0, 0, 0, 0),
-    value = NA)
+modify_raster_margins(x, extent_delta = c(0, 0, 0, 0), value = NA)
 }
 \arguments{
   \item{x}{A Raster* object.}
@@ -15,17 +14,17 @@
   \item{value}{Value to fill in when adding rows/columns.}
 }
 \value{
-  A Raster* object.
+A Raster* object.
 }
 \description{
-  Add/subtract rows and columns from Raster*
+Add/subtract rows and columns from Raster*
 }
 \details{
-  A quick way to add/subtract margins from a Raster*
-  object.  extent_delta is a four-element integer vector
-  that describes how many rows/columns to add to the
-  (left,right,top,bottom) of the image (in that order).
-  Negative values remove rows, positive values add rows.
+A quick way to add/subtract margins from a Raster* object.
+extent_delta is a four-element integer vector that
+describes how many rows/columns to add to the
+(left,right,top,bottom) of the image (in that order).
+Negative values remove rows, positive values add rows.
 }
 \examples{
 tahoe_highrez <- brick(system.file("external/tahoe_highrez.tif", package="spatial.tools"))
@@ -38,6 +37,6 @@ tahoe_highrez_expand <- modify_raster_margins(x=tahoe_highrez,extent_delta=c(2,0
 dim(tahoe_highrez_expand)
 }
 \author{
-  Jonathan A. Greenberg
+Jonathan A. Greenberg
 }
 

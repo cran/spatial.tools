@@ -3,7 +3,7 @@
 \alias{tahoe_highrez_training}
 \title{Point and polygon files for use with spatial.tools}
 \description{
-  Point and polygon files for use with spatial.tools
+Point and polygon files for use with spatial.tools
 }
 \examples{
 tahoe_highrez_training_polygons <- readOGR(
@@ -18,8 +18,7 @@ tahoe_highrez_training_points_utm <- readOGR(
 print(projection(tahoe_highrez_training_points_utm))
 }
 \author{
-  Jonathan A. Greenberg \email{spatial.tools@estarcion.net}
+Jonathan A. Greenberg \email{spatial.tools@estarcion.net}
 }
 \keyword{data}
-\keyword{datasets}
 

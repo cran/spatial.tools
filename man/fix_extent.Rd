@@ -2,7 +2,7 @@
 \alias{fix_extent}
 \title{Forces a list of Raster*s to all have the same extent.}
 \usage{
-  fix_extent(extent_reference, broken_extents)
+fix_extent(extent_reference, broken_extents)
 }
 \arguments{
   \item{extent_reference}{Raster*. A Raster* object that
@@ -15,7 +15,7 @@
   extent.}
 }
 \description{
-  Forces a list of Raster*s to all have the same extent.
+Forces a list of Raster*s to all have the same extent.
 }
 \examples{
 tahoe_highrez <- brick(system.file("external/tahoe_highrez.tif", package="spatial.tools"))
@@ -28,10 +28,9 @@ tahoe_highrez_fixed <- fix_extent(tahoe_highrez,tahoe_highrez_broken)
 tahoe_highrez_fixed
 }
 \author{
-  Jonathan A. Greenberg
-  (\email{spatial.tools@estarcion.net})
+Jonathan A. Greenberg (\email{spatial.tools@estarcion.net})
 }
 \seealso{
-  \code{\link{extent}},\code{\link{stack}}
+\code{\link{extent}},\code{\link{stack}}
 }
 
