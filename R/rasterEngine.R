@@ -15,9 +15,11 @@
 #' @param outfiles Numeric. If known, how many output files?  Assigning this and outbands will allow focal_hpc to skip the pre-check.
 #' @param setMinMax Logical. Run a setMinMax() on each output file after processing (this will slow the processing down). Default is FALSE.
 #' @param additional_header Character. Create additional output headers for use with other GIS systems (see \code{\link{hdr}}). Set to NULL to suppress.  Default is "ENVI".
+#' @param datatype Character.  Output number type.  See ?dataType.  Default is "FLT8S".  
 #' @param compileFunction Logical. Runs a byte-code compilation on the user function before running. Setting this to TRUE may speed up the execution.  Default is FALSE.
 #' @param debugmode Logical.  If TRUE, the function will enter debug mode during the test phase.  Note the inputs will be an array of size 2 columns, 1 row, and how ever many input bands.
 #' @param .packages Character. A character vector of package names needed by the function (parallel mode only).
+#' @param clearworkers Logical. Force the workers to clear all objects upon completing (releasing memory)?  Default=TRUE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' @param ... Raster*s. Named variables pointing to Raster* objects.  See Details.
 #' @author Jonathan A. Greenberg (\email{spatial.tools@@estarcion.net})
@@ -85,12 +87,12 @@
 #'
 #'# Note that you can use any parallel backend that can be registered with foreach.
 #'# sfQuickInit() will spawn a PSOCK cluster using the parallel package.
-#'sfQuickInit(cpus=2)
+#'# sfQuickInit(cpus=2)
 #'tahoe_lidar_highesthit_multiplied <- rasterEngine(
 #'	inraster=tahoe_lidar_highesthit,
 #'	fun=apply_multiplier,
 #'	args=list(multiplier=3.28084))
-#'sfQuickStop()
+#'# sfQuickStop()
 #'  
 #'\dontrun{ 
 #'# Pixel-based processing on more than one band: 
@@ -142,6 +144,7 @@ rasterEngine <- function(x,
 		window_center=c(ceiling(window_dims[1]/2),ceiling(window_dims[2]/2)),
 		filename=NULL, overwrite=FALSE,
 		outformat="raster",additional_header="ENVI",
+		datatype="FLT8S",
 		processing_unit=NULL,chunk_format="array",
 		minblocks="max",blocksize=NULL,
 		outbands=NULL,outfiles=NULL,
@@ -149,8 +152,11 @@ rasterEngine <- function(x,
 		compileFunction=FALSE,
 		debugmode=FALSE,
 		.packages=NULL,
+		clearworkers=TRUE,
 		verbose=FALSE,...) 
 {
+	loaded_packages <- lapply(.packages, require, character.only=T)
+	
 	if(debugmode) debugmode <- 2
 	
 	additional_vars <- list(...)
@@ -230,6 +236,7 @@ rasterEngine <- function(x,
 			window_center=window_center,
 			filename=filename, overwrite=overwrite,
 			outformat=outformat,additional_header=additional_header,
+			datatype=datatype,
 			processing_unit=processing_unit,
 			chunk_format=chunk_format,
 			minblocks=minblocks,blocksize=blocksize,
@@ -237,6 +244,7 @@ rasterEngine <- function(x,
 			setMinMax=setMinMax,
 			debugmode=debugmode,
 			.packages=.packages,
+			clearworkers=TRUE,
 			verbose=verbose)
 	
 	if(compileFunction)

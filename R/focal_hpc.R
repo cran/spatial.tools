@@ -52,7 +52,7 @@ focal_hpc_test <- function(x,fun,window_center,window_dims,args,
 		processing_mode,processing_unit,chunk_format,
 		verbose)
 {
-#	browser()
+
 	window_index <- NULL # Why is this here?
 	
 	if(verbose) { message("Checking the function on a small chunk of data.") }
@@ -128,7 +128,6 @@ focal_hpc_test <- function(x,fun,window_center,window_dims,args,
 #													outchunk <- aperm(outchunk,c(2,1,3))
 #													return(outchunk)
 #												},chunk=chunk,central_index=central_index)
-#										#		browser()
 #										dim(focal_shifted_array) <- c(length(central_index),prod(window_dims),dim(chunk)[3])
 #										dimnames(focal_shifted_array) <- vector(mode="list",length=3)
 #										if(!is.null(layer_names)) dimnames(focal_shifted_array)[[3]]=layer_names # [as.numeric(xyz_off[3,])]
@@ -202,8 +201,6 @@ focal_hpc_test <- function(x,fun,window_center,window_dims,args,
 	# Coerce to list
 	if(class(r_check_function) != "list") r_check_function <- list(r_check_function)
 	
-#	browser()
-	
 	r_check_output_classes <- sapply(r_check_function,class)
 	
 	if(processing_unit=="single")
@@ -263,8 +260,10 @@ focal_hpc_chunk_setup <- function(x,window_dims,window_center,
 		nlayers_x <- nlayers(x)
 	}
 	
+	blocksize_reduction=4
+	
 	if(is.null(blocksize))
-		tr=blockSize(x,n=nlayers_x,minrows=window_dims[2],minblocks=minblocks)
+		tr=blockSize(x,n=nlayers_x*blocksize_reduction,minrows=window_dims[2],minblocks=minblocks)
 	else
 		tr=blockSize(x,chunksize=ncol(x)*blocksize*nlayers_x,
 				n=nlayers_x,minrows=window_dims[2],minblocks=minblocks)
@@ -302,6 +301,7 @@ focal_hpc_focal_getChunk <- function(x,tr,format,r,i,r_old,chunkArgs)
 	# Create some blank variables:
 	window_center <- NULL
 	window_dims <- NULL
+	datatype <- NULL
 	
 	list2env(chunkArgs,envir=environment())
 	
@@ -382,6 +382,7 @@ focal_hpc_focalChunkFunction <- function(chunk,chunkArgs)
 	outbands <- NULL
 	window_center <- NULL
 	processing_unit <- NULL
+	datatype <- NULL
 	verbose <- NULL
 	
 	#
@@ -431,7 +432,6 @@ focal_hpc_focalChunkFunction <- function(chunk,chunkArgs)
 										},chunk=chunk,layer_name=layer_names,
 										MoreArgs=list(window_index=window_index,window_dims=window_dims),
 										SIMPLIFY=FALSE)	
-								#	browser()
 								
 							} else
 							{
@@ -442,7 +442,6 @@ focal_hpc_focalChunkFunction <- function(chunk,chunkArgs)
 							fun_args=args
 							fun_args$x=x_array
 							r_out <- do.call(fun, fun_args)
-							#					browser()
 							return(unlist(r_out))
 						}
 						,
@@ -456,10 +455,8 @@ focal_hpc_focalChunkFunction <- function(chunk,chunkArgs)
 		
 		if(class(r_out)=="numeric") dim(r_out) <- c(1,length(r_out))
 		
-#		browser()
 		r_out <- mapply(function(outbands_start,outbands_end,r_out,ncol_x) 
 				{
-#					browser()
 					subarray <- array(t(r_out[(outbands_start:outbands_end),,drop=FALSE]),dim=c(ncol_x,1,(outbands_end-outbands_start+1)))
 					return(subarray)
 				}
@@ -492,7 +489,6 @@ focal_hpc_focalChunkFunction <- function(chunk,chunkArgs)
 									outchunk <- aperm(outchunk,c(2,1,3))
 									return(outchunk)
 								},chunk=chunk,central_index=central_index)
-						#		browser()
 						dim(focal_shifted_array) <- c(length(central_index),prod(window_dims),dim(chunk)[3])
 						dimnames(focal_shifted_array) <- vector(mode="list",length=3)
 						if(!is.null(layer_names)) dimnames(focal_shifted_array)[[3]]=layer_names # [as.numeric(xyz_off[3,])]
@@ -547,9 +543,7 @@ focal_hpc_focalChunkFunction <- function(chunk,chunkArgs)
 			filenum=as.list(seq(filename)),
 			outbands=outbands,
 			MoreArgs=list(image_dims=image_dims),SIMPLIFY=FALSE)
-	
-#	browser()
-	
+
 	if(!is.list(r_out)) r_out <- list(r_out)
 	
 #	chunk_position=list(
@@ -587,33 +581,29 @@ focal_hpc_focalChunkFunction <- function(chunk,chunkArgs)
 #				print(image_dims)
 #				print(r_out)
 				writeSuccess=FALSE
+				
 				while(!writeSuccess)
 				{
 					writeSuccess=TRUE
 					tryCatch(
-							binary_image_write(filename=filename,mode=real64(),image_dims=image_dims,
+							binary_image_write(filename=filename,mode=datatype,image_dims=image_dims,
 									interleave="BSQ",data=r_out,data_position=chunk_position)
 							,
 							error=function(err) writeSuccess <<- FALSE)	
 				}
 			},filename=as.list(filename),r_out=r_out,chunk_position=chunk_position,image_dims=out_image_dims)
-	
-	
-	
-	
-	
 }
 
 
 focal_hpc_focal_processing <- function(tr,texture_tr,chunkArgs)
 {
 	# Create some blank variables:
-#	browser()
 	verbose <- NULL
 	x <- NULL
 	chunk_format <- NULL
 	chunk <- NULL
 	window_dims <- NULL
+	datatype <- NULL
 	.packages <- NULL
 	
 	list2env(chunkArgs,envir=environment())
@@ -664,6 +654,8 @@ focal_hpc_focal_processing <- function(tr,texture_tr,chunkArgs)
 								{
 									if(chunk_format=="array")
 									{
+										# Something is wrong with j
+									#	print(j)
 										processing_chunk=X[,texture_tr$row[j]:texture_tr$row2[j],,drop=FALSE]
 									}
 									if(chunk_format=="raster")
@@ -699,7 +691,7 @@ focal_hpc_focal_processing <- function(tr,texture_tr,chunkArgs)
 						.verbose=verbose) %dopar% 
 		#		spatial.tools:::
 		focal_hpc_focalChunkFunction(chunk,chunkArgs)
-		
+
 		if(i<tr$n && window_dims[2] > 1)
 			if(is.list(r))
 			{
@@ -729,13 +721,12 @@ focal_hpc_focal_processing <- function(tr,texture_tr,chunkArgs)
 }
 
 focal_hpc_pixelChunkFunction <- function(chunkID,tr,x,
-		chunk_format,fun,fun_args,layer_names,outbands,filename)
+		chunk_format,fun,fun_args,layer_names,outbands,filename,datatype)
 {
 	
 	# Seeing some memory creep, hopefully this will help:
 	# gc()
 	# Read the chunk
-#	browser()
 	if(is.list(x))
 	{
 		r <- sapply(X=x,FUN=function(X,chunkID,chunk_format)
@@ -819,11 +810,14 @@ focal_hpc_pixelChunkFunction <- function(chunkID,tr,x,
 #				print(image_dims)
 #				print(r_out)
 				writeSuccess=FALSE
+				
+#				browser()
+				
 				while(!writeSuccess)
 				{
 					writeSuccess=TRUE
 					tryCatch(
-							binary_image_write(filename=filename,mode=real64(),image_dims=image_dims,
+							binary_image_write(filename=filename,mode=datatype,image_dims=image_dims,
 									interleave="BSQ",data=r_out,data_position=chunk_position)
 							,
 							error=function(err) writeSuccess <<- FALSE)	
@@ -844,6 +838,7 @@ focal_hpc_pixel_processing <- function(tr,chunkArgs)
 	layer_names <- NULL
 	outbands <- NULL
 	verbose <- NULL
+	datatype <- NULL
 	.packages <- NULL
 	
 	list2env(chunkArgs,envir=environment())
@@ -851,7 +846,7 @@ focal_hpc_pixel_processing <- function(tr,chunkArgs)
 	foreach(chunkID=chunkID, .packages=c("rgdal","raster","spatial.tools","mmap",.packages),.verbose=verbose) %dopar% 
 	#		spatial.tools:::
 	focal_hpc_pixelChunkFunction(chunkID,tr,x,chunk_format,fun,args,layer_names,outbands,
-					filename)
+					filename,datatype)
 }
 
 #' Engine for performing fast, easy-to-develop pixel and focal raster calculations with parallel processing capability.
@@ -871,8 +866,10 @@ focal_hpc_pixel_processing <- function(tr,chunkArgs)
 #' @param outfiles Numeric. If known, how many output files?  Assigning this and outbands will allow focal_hpc to skip the pre-check.
 #' @param setMinMax Logical. Run a setMinMax() on each output file after processing (this will slow the processing down). Default is FALSE.
 #' @param additional_header Character. Create additional output headers for use with other GIS systems (see \code{\link{hdr}}). Set to NULL to suppress.  Default is "ENVI".
+#' @param datatype Character.  Output number type.  See ?dataType.  Default is "FLT8S".  
 #' @param debugmode Logical or Numeric.  If TRUE or 1, the function will enter debug mode during the test phase.  If debugmode equals 2, the function will stop after the test phase, but won't explicitly enter debug mode.  This is useful if the user function has a browser() statement within it.  Note the inputs will be an array of size 2 columns, 1 row, and how ever many input bands.
 #' @param .packages Character. A character vector of package names needed by the function (parallel mode only).
+#' @param clearworkers Logical. Force the workers to clear all objects upon completing (releasing memory)?  Default=TRUE.
 #' @param verbose logical. Enable verbose execution? Default is FALSE.  
 #' @param ... Additional parameters (none at present).
 #' @author Jonathan A. Greenberg (\email{spatial.tools@@estarcion.net})
@@ -976,12 +973,14 @@ focal_hpc <- function(x,
 		window_center=c(ceiling(window_dims[1]/2),ceiling(window_dims[2]/2)),
 		filename=NULL, overwrite=FALSE,
 		outformat="raster",additional_header="ENVI",
+		datatype="FLT8S",
 		processing_unit=NULL,chunk_format="array",
 		minblocks="max",blocksize=NULL,
 		outbands=NULL,outfiles=NULL,
 		setMinMax=FALSE,
 		debugmode=FALSE,
 		.packages=NULL,
+		clearworkers=TRUE,
 		verbose=FALSE,
 		...) 
 {
@@ -1002,6 +1001,9 @@ focal_hpc <- function(x,
 	tr <- NULL
 	processing_mode <- NULL
 	texture_tr <- NULL
+	
+# 	Make sure all the packages are loaded.
+	loaded_packages <- lapply(.packages, require, character.only=T)
 	
 #	if(!is.list(x)) { x <- list(x) }
 	
@@ -1043,7 +1045,6 @@ focal_hpc <- function(x,
 	if(debugmode==TRUE) debug(fun)
 #	else(undebug(fun))
 	
-#	browser()
 	# Test focal_hpc and determine the number of outbands and files.
 	if(is.null(outbands) || is.null(outfiles))
 	{
@@ -1063,7 +1064,6 @@ focal_hpc <- function(x,
 		stop("Debug mode finished.  Stopping run.")
 	}
 	
-#	browser()
 	# Set up chunking parameters.
 	list2env(
 	#		spatial.tools:::
@@ -1087,9 +1087,10 @@ focal_hpc <- function(x,
 	out <- mapply(function(filename,outbands,reference_raster,overwrite,verbose)
 			{
 				create_blank_raster(filename=filename,
-						format="raster",dataType="FLT8S",bandorder="BSQ",
+						format="raster",datatype=datatype,bandorder="BSQ",
 						nlayers=outbands,
 						create_header=TRUE,reference_raster=reference_raster,
+						additional_header=additional_header,
 						overwrite=overwrite,verbose=verbose)
 			},filename=filename,outbands=outbands,
 			MoreArgs=list(reference_raster=reference_raster,overwrite=overwrite,verbose=verbose)
@@ -1104,10 +1105,10 @@ focal_hpc <- function(x,
 			outbands=outbands,processing_unit=processing_unit,
 			verbose=verbose,layer_names=layer_names,
 			chunk_format=chunk_format,
-			.packages=.packages)
+			.packages=.packages,
+			datatype=datatype)
 	
 	# Processing:
-# 	browser()
 	if(processing_mode=="focal")
 	{
 		#spatial.tools:::
@@ -1120,6 +1121,17 @@ focal_hpc <- function(x,
 	
 # browser()
 	
+# Flush the workers.
+
+	if(clearworkers && getDoParName() != "doSEQ")
+	{
+		cleared <- foreach(nworkers=seq(getDoParWorkers())) %dopar%
+				{
+					rm(list=ls(all.names=TRUE))
+					return(TRUE)
+				}
+	}
+
 	focal_out <- sapply(X=as.list(out),FUN=function(X,additional_header,setMinMax)
 			{
 				focal_out <- brick(X)

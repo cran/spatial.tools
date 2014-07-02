@@ -17,23 +17,23 @@ dataType_converter <- function(from,fromFormat="raster",toFormat="mmap")
 					NA,
 					NA,
 					NA),
-			mmap=c(
-					logi8,
-					int8,
-					uint8,
-					int16,
-					uint16,
-					int32,
+			mmap=list(
+					as.Ctype(logi8()),
+					as.Ctype(int8()),
+					as.Ctype(uint8()),
+					as.Ctype(int16()),
+					as.Ctype(uint16()),
+					as.Ctype(int32()),
 					NA,
-					real32,
-					real64,
-					uchar,
-					logi32,
-					int24,
-					uint24,
-					int64,
-					cplx
-					)
+					as.Ctype(real32()),
+					as.Ctype(real64()),
+					as.Ctype(uchar()),
+					as.Ctype(logi32()),
+					as.Ctype(int24()),
+					as.Ctype(uint24()),
+					as.Ctype(int64()),
+					as.Ctype(cplx())
+			)
 	)
 	
 	if(fromFormat=="raster")
