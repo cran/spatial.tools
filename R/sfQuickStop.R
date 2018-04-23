@@ -19,11 +19,11 @@ sfQuickStop <- function(kill=FALSE,...)
 	if(kill)
 	{
 		pid_connections <- lapply(getOption("spatial.tools.current.cl"),function(x) return(x$con))
-		sapply(pid_connections,function(x) close(x))
+		sapply(pid_connections,function(x) tryCatch(close(x),error=function(e){}))
 		options(spatial.tools.current.cl=NULL)
 	} else
 	{
-		stopCluster(cl)
+		tryCatch(stopCluster(cl),error=function(e){})
 		options(spatial.tools.current.cl=NULL)
 	}
 	

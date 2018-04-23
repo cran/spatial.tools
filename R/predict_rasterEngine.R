@@ -1,7 +1,10 @@
 #' Model predictions (including Raster* objects)
 #' @param object a model object for which prediction is desired.
+#' @param filename Character. Output filename.  If unset, will default to a temporary file.
 #' @param na.rm.mode Logical. Attempt to fix missing data, even if the model object doesn't support na.rm?  Default is TRUE.
+#' @param ncores Numeric. Number of cores to use when predicting.  Only used with randomForestSRC for now.  Do not combine with foreach registered parallel engines (e.g. sfQuickInit())
 #' @param debugmode Logical. Internal debugging for the code, will be removed eventually. Default is FALSE.
+#' @param verbose Logical. Enable verbose execution? Default is FALSE.  
 #' @param ... additional arguments affecting the predictions produced.
 #' @author Jonathan A. Greenberg (\email{spatial.tools@@estarcion.net})
 #' @seealso \code{\link{predict}}
@@ -16,6 +19,7 @@
 #' with foreach via a do* statement, or if the user uses sfQuickInit().
 #'  
 #' @examples
+#' library("raster")
 #' # This example creates a linear model relating a vegetation
 #' # index (NDVI) to vegetation height, and applies it to a raster
 #' # of NDVI.
@@ -70,22 +74,43 @@
 #' # sfQuickInit()
 #' height_from_ndvi_raster <- predict_rasterEngine(object=height_from_ndvi_model,newdata=tahoe_ndvi)
 #' # sfQuickStop()
+#' @importFrom stats complete.cases
 #' @export
 
-predict_rasterEngine <- function(object,na.rm.mode=TRUE,debugmode=FALSE,...)
+predict_rasterEngine <- function(object,filename=NULL,na.rm.mode=TRUE,
+#		prob=NULL,
+		ncores=1,debugmode=FALSE,verbose=F,...)
 {
+	
+	prob <- NULL
+	
 	list2env(list(...),envir=environment())
 	if("newdata" %in% ls())
 	{
 		newdata <- newdata
 		if(is.Raster(newdata))
 		{
-			predict.rasterEngine_function <- function(newdata,object,na.rm.mode,...)
+			### FUNCTION TO BE PASSED TO RASTERENGINE
+			predict.rasterEngine_function <- function(newdata,object,na.rm.mode,ncores,...)
 			{
+#				browser()
+				# if(sum(newdata$dim[1:2]) > 3) browser()
 				
 				# Determine all parameters that are not newdata and object:
 				local_objects <- ls()
-				model_parameters <- setdiff(local_objects,c("newdata","object","na.rm.mode"))
+				model_parameters <- setdiff(local_objects,c("newdata","object","na.rm.mode","ncores"))
+				
+#				browser()
+				
+				
+				# Parallel processing 
+				if("rfsrc" %in% class(object))
+				{
+					options(rf.cores = ncores)
+					options(mc.cores = 1)
+				}
+				
+				
 				
 				newdata_dim <- newdata$dim
 				
@@ -112,7 +137,7 @@ predict_rasterEngine <- function(object,na.rm.mode=TRUE,debugmode=FALSE,...)
 #					}
 #				}
 				
-				if("randomForest" %in% class(object)) na.rm.mode=TRUE
+				if("randomForest" %in% class(object) || "rfsrc" %in% class(object)) na.rm.mode=TRUE
 				
 				newdata_complete <- NULL
 				
@@ -127,10 +152,10 @@ predict_rasterEngine <- function(object,na.rm.mode=TRUE,debugmode=FALSE,...)
 				if("randomForest" %in% class(object))
 				{
 					# First check for complete cases:
-				#	newdata_complete <- complete.cases(newdata_df)
+					#	newdata_complete <- complete.cases(newdata_df)
 					
 					# Placeholders:
-				#	newdata_df[is.na(newdata_df)] <- 0
+					#	newdata_df[is.na(newdata_df)] <- 0
 					
 					# Missing factors
 					xlevels <- object$forest$xlevels
@@ -158,13 +183,41 @@ predict_rasterEngine <- function(object,na.rm.mode=TRUE,debugmode=FALSE,...)
 					predict_output <- predict(object=object,newdata=newdata_df,mget(model_parameters))
 				} else
 				{
-					predict_output <- predict(object=object,newdata=newdata_df)
+					# Fix for rfsrc quantileReg:
+					if(!is.null(prob))
+					{
+#						browser()
+						predict_output <- randomForestSRC::quantileReg(obj=object,prob=prob,newdata=newdata_df)
+					} else
+					{
+						predict_output <- predict(object=object,newdata=newdata_df)
+					}
 				}
 				
 				# This needs to be made more "secure"
-				if(class(predict_output)=="numeric")
+				# Fix for rfsrc:
+				if("rfsrc" %in% class(predict_output))
 				{
-				#	dim(predict_output) <- c(newdata_dim[1:2])
+					if(predict_output$family != "class")
+					{
+						# New fix for multivariate forests:
+						if(predict_output$family == "regr+")
+						{
+							predict_output <- sapply(predict_output$regrOutput,function(x) return(x$predicted)) 
+						}else
+						{
+							predict_output <- predict_output$predicted
+						}
+					} else
+					{
+						predict_output <- predict_output$class	
+					}
+				}	
+				
+				# Not sure if this will work with =="array"...
+				if(class(predict_output)=="numeric" || class(predict_output)=="factor" || class(predict_output)=="array")
+				{
+					#	dim(predict_output) <- c(newdata_dim[1:2])
 					predict_output <- as.data.frame(predict_output)
 				}
 				
@@ -173,18 +226,30 @@ predict_rasterEngine <- function(object,na.rm.mode=TRUE,debugmode=FALSE,...)
 				# Mixed class data frame:
 				factor_columns <- sapply(predict_output,class)=="factor"
 				
-				predict_output[,factor_columns] <- as.numeric(predict_output[,factor_columns])
-				
+				if(sum(factor_columns)>0) {
+#					browser()
+					predict_output[,factor_columns] <- as.numeric(predict_output[,factor_columns])
+				}
 #				if("factor" %in% class(predict_output))
 #				{
 #					predict_output <- as.numeric(predict_output)
 #				}
 				
+				
+#				print(dim(predict_output))
+#				print(dim(newdata_complete))
+#				if(is.null(dim(newdata_complete))) browser()
 				if(!is.null(newdata_complete))
 				{
 					if(!is.null(dim(predict_output)))
 					{
-						predict_output[!newdata_complete,] <- NA
+						if(length(dim(predict_output))>1)
+						{
+							predict_output[!newdata_complete,] <- NA
+						} else
+						{
+							predict_output[!newdata_complete] <- NA
+						}
 					} else
 					{
 						predict_output[!newdata_complete] <- NA
@@ -202,12 +267,12 @@ predict_rasterEngine <- function(object,na.rm.mode=TRUE,debugmode=FALSE,...)
 			factor_layers <- is.factor(newdata)
 			
 			additional_args <- list(...)
-			additional_args <- c(list(object=object,na.rm.mode=na.rm.mode),
+			additional_args <- c(list(object=object,na.rm.mode=na.rm.mode,ncores=ncores),
 					unlist(additional_args,recursive=FALSE))
 			additional_args$newdata <- NULL
 			
 			output <- rasterEngine(newdata=newdata,fun=predict.rasterEngine_function,
-					args=additional_args,.packages=(.packages()),debugmode=debugmode,chunk_format="data.frame.dims")
+					args=additional_args,.packages=(.packages()),filename=filename,debugmode=debugmode,chunk_format="data.frame.dims",verbose=verbose)
 			
 			return(output)
 		}

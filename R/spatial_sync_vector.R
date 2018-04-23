@@ -5,6 +5,8 @@
 #' @name spatial_sync_vector
 #' @author Jonathan A. Greenberg (\email{spatial.tools@@estarcion.net})
 #' @examples
+#' library("rgdal")
+#' library("raster")
 #' tahoe_highrez_training_points_utm <- readOGR(
 #' 	dsn=system.file("external", package="spatial.tools"),
 #' 	layer="tahoe_highrez_training_points_utm")

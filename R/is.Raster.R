@@ -4,6 +4,7 @@
 #' @return A logical vector.
 #' @author Jonathan A. Greenberg
 #' @examples
+#' library("raster")
 #' tahoe_highrez <- brick(system.file("external/tahoe_highrez.tif", package="spatial.tools"))
 #' is.Raster(tahoe_highrez)
 #' tahoe_lidar_bareearth <- 

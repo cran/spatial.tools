@@ -5,6 +5,7 @@
 #' @author Jonathan A. Greenberg \email{spatial.tools@@estarcion.net}
 #' @keywords data
 #' @examples
+#' library("raster")
 #' tahoe_highrez <- brick(system.file("external/tahoe_highrez.tif", package="spatial.tools"))
 #' plotRGB(tahoe_highrez)
 NULL

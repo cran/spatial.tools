@@ -4,6 +4,8 @@
 #' @author Jonathan A. Greenberg \email{spatial.tools@@estarcion.net}
 #' @keywords data
 #' @examples
+#' library("raster")
+#' library("rgdal")
 #' tahoe_highrez_training_polygons <- readOGR(
 #' 	dsn=system.file("external", package="spatial.tools"),layer="tahoe_highrez_training")
 #' spplot(tahoe_highrez_training_polygons,zcol="Class")

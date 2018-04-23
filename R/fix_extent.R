@@ -5,7 +5,7 @@
 #' @seealso \code{\link{extent}},\code{\link{stack}}
 #' 
 #' @examples
-#' 
+#' library("raster")
 #' tahoe_highrez <- brick(system.file("external/tahoe_highrez.tif", package="spatial.tools"))
 #' tahoe_highrez
 #' tahoe_highrez_broken <- tahoe_highrez

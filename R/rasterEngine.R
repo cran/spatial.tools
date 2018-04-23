@@ -1,5 +1,5 @@
 #' Engine for performing fast, easy-to-develop pixel and focal raster calculations with parallel processing capability.
-#' @param x Raster*. A Raster* used as the input into the function.  This is optional, as long as some Raster* was defined in "..."
+#' @param x Raster*. A Raster* or a list of named Raster* objects used as the input into the function.  This is optional, as long as some Raster* was defined in "..."
 #' @param fun Function. A focal function to be applied to the image. See Details.
 #' @param args List. Arguments to pass to the function (see ?mapply).  Note that the 'fun' should explicitly name the variables.
 #' @param window_dims Vector. The size of a processing window in col x row order.  Be default, a single pixel (c(1,1).
@@ -8,7 +8,7 @@
 #' @param overwrite Logical. Allow files to be overwritten? Default is FALSE.
 #' @param outformat Character. Outformat of the raster. Must be a format usable by hdr(). Default is 'raster'. CURRENTLY UNSUPPORTED.
 #' @param processing_unit Character. ("single"|"chunk") Will be auto-set if not specified ("chunk" for pixel-processing, "single" for focal processing).  See Details.
-#' @param chunk_format Character. The format to send the chunk to the function.  Can be "array" (default) or "raster".
+#' @param chunk_format Character. The format to send the chunk to the function.  Can be "array" (default), "raster", or "data.frame".
 #' @param minblocks Numeric. The minimum number of chunks to divide the raster into for processing.  Defaults to 1.
 #' @param blocksize Numeric. The size (in rows) for a block of data.  If unset, rasterEngine will attempt to figure out an optimal blocksize.
 #' @param outbands Numeric. If known, how many bands in each output file?  Assigning this and outfiles will allow focal_hpc to skip the pre-check.
@@ -42,18 +42,18 @@
 #' 
 #' 1) If chunk_format=="array" (default), the input to the function should assume an array of dimensions 
 #' x,y,z where x = the number of columns in a chunk, y = the number of rows in the chunk, and 
-#' z = the number of bands in the chunk.  If chunk_format=="raster", the input to the function
-#' will be a raster subset.
+#' z = the number of bands in the chunk.  If chunk_format=="data.frame", the function receives a data.frame
+#' where each column of the data.frame is a single layer from the input raster(s).  If chunk_format=="raster", 
+#' the input to the function will be a raster subset.
+#' 
 #' Note that we are ordering the array using standards for geographic data, (columns, rows, bands), 
 #' not how R usually thinks of arrays (rows, columns, bands).
 #' 
-#' 2) If a single file is to be output from rasterEngine, the output of the function should 
-#' always be an array with the x and y dimensions matching the input, and an arbitrary number 
+#' 2) The output of the function can be as follows:
+#' - A data.frame where each column is assumed to be a single layer in the output raster
+#' - An array with the x and y dimensions matching the input, and an arbitrary number 
 #' of band outputs.  Remember to order the dimensions as columns, rows, bands (x,y,z).
-#' 
-#' If a multiple file output is required, the output of the function should return a list of arrays 
-#' each with an equivalent number of columns and rows.  The first element of the list will be assigned to
-#' the first filename (if provided).  
+#' - A numeric vector, where the output is assumed to be a single layer (similar to calc() ).
 #' 
 #' Local window processing:
 #' 
@@ -70,9 +70,8 @@
 #' particularly on smaller files.  Note that by simply running sfQuickStop(), rasterEngine
 #' will run in sequential mode.
 #' 
-#' A fuller tutorial is available at \url{http://publish.illinois.edu/jgrn/software-and-datasets/rasterengine-tutorial/}
-#' 
 #' @examples
+#' library("raster")
 #' # Pixel-based processing on one band:
 #'apply_multiplier <- function(inraster,multiplier)
 #'{
@@ -160,10 +159,21 @@ rasterEngine <- function(x,
 	if(debugmode) debugmode <- 2
 	
 	additional_vars <- list(...)
+	
+	if(!missing(x))
+	{
+		if(is.list(x))
+		{
+			if(is.null(names(x))) stop("If x is a list, please name the list elements.")
+			additional_vars <- c(additional_vars,x)
+			x <- NULL
+		}
+	}
+	
 	if(length(additional_vars)>0)
 	{
-	additional_vars_isRaster <- sapply(additional_vars,is.Raster)
-	additional_vars_Raster <- additional_vars[additional_vars_isRaster]
+		additional_vars_isRaster <- sapply(additional_vars,is.Raster)
+		additional_vars_Raster <- additional_vars[additional_vars_isRaster]
 	} else
 	{
 		additional_vars_Raster <- NULL
@@ -185,9 +195,15 @@ rasterEngine <- function(x,
 		x <- additional_vars_Raster
 	} else
 	{
+		if(is.null(x))
+		{
+			x <- additional_vars_Raster
+		} else
+		{
 #		if(class(x) != "list")
-		x <- c(x,additional_vars_Raster)
-		names(x)[[1]] <- "x"
+			x <- c(x,additional_vars_Raster)
+			names(x)[[1]] <- "x"
+		}
 	}
 	
 	# Fix missing ellipses in function.  Thanks to Ista Zahn for the solution.
@@ -210,7 +226,7 @@ rasterEngine <- function(x,
 	
 	focal_hpc_multiRaster_function <- function(x,fun,debugmode,...)
 	{
-	#	browser()
+#		browser()
 		local_objects <- ls()
 		function_vars <- setdiff(local_objects,c("x","fun","debugmode"))
 		
@@ -223,13 +239,15 @@ rasterEngine <- function(x,
 	
 	if(compileFunction)
 	{
-	#	library(compiler)
+		#	library(compiler)
 		enableJIT(3)
 		focal_hpc_multiRaster_function <- cmpfun(focal_hpc_multiRaster_function)
 	}
 	
 #	browser()
-	
+	# debugmode dies if this isn't set...	
+#	options(deparse.max.lines=100)
+
 	rasterEngine_out <- focal_hpc(x,fun=focal_hpc_multiRaster_function,
 			args=c(list(fun=fun,debugmode=debugmode),args),
 			window_dims=window_dims, 

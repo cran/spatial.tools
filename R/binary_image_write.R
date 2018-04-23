@@ -37,12 +37,11 @@
 binary_image_write=function(filename,mode=real64(),image_dims,interleave="BSQ",
 	data,data_position)
 {
+#	browser()
 	
 	if(is.character(mode))
 	{
-		mode = 
-				#spatial.tools:::
-		dataType_converter(from=mode)
+		mode = dataType_converter(from=mode)
 	}
 	
 	# data_position should be of format rbind(col_pos,row_pos,band_pos)

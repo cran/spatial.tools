@@ -18,6 +18,7 @@
 #' rather than each unique layer.
 #' 
 #' @examples
+#' library("raster")
 #' tahoe_highrez <- brick(system.file("external/tahoe_highrez.tif", package="spatial.tools"))
 #' tahoe_highrez_stack <- stack(tahoe_highrez,tahoe_highrez,tahoe_highrez)
 #' # getValuesBlock stack extraction:

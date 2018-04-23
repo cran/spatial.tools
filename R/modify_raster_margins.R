@@ -11,6 +11,7 @@
 #' positive values add rows.
 #' 
 #' @examples
+#' library("raster")
 #' tahoe_highrez <- brick(system.file("external/tahoe_highrez.tif", package="spatial.tools"))
 #' dim(tahoe_highrez)
 #' # Remove one row and column from the top, bottom, left, and right:

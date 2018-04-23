@@ -10,6 +10,7 @@
 #' and Raster*s without values.  If a filename is not found, the entry will be "".
 #' 
 #' @examples { 
+#' library("raster")
 #' tahoe_highrez <- brick(system.file("external/tahoe_highrez.tif", package="spatial.tools"))
 #' raster_to_filenames(tahoe_highrez)
 #' raster_to_filenames(tahoe_highrez,unique=TRUE)

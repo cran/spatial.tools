@@ -9,8 +9,7 @@
 #' @examples 
 #' sfQuickInit(cpus=2)
 #' sfQuickStop()
-#' @import parallel
-#' @import doParallel
+#' @import doParallel parallel
 #' @export
 
 # TODO: What to do if a cluster is already running

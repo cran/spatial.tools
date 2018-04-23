@@ -12,6 +12,7 @@
 #' @import raster
 #' @import foreach
 #' @examples
+#' library("raster")
 #' tahoe_lidar_highesthit <- 
 #' 	raster(system.file("external/tahoe_lidar_highesthit.tif", package="spatial.tools"))
 #' tahoe_lidar_highesthit_igm <- raster_to_IGM(tahoe_lidar_highesthit)
