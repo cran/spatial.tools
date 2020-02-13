@@ -16,5 +16,5 @@
 
 is.Raster <- function(x)
 {
-	return((class(x)=="RasterLayer" || class(x)=="RasterBrick" || class(x)=="RasterStack"))
+	return((class(x)[1]=="RasterLayer" || class(x)[1]=="RasterBrick" || class(x)[1]=="RasterStack"))
 }

@@ -4,8 +4,14 @@
 \alias{binary_image_write}
 \title{Writes image data to a flat binary file using col/row/band positioning.}
 \usage{
-binary_image_write(filename, mode = real64(), image_dims,
-  interleave = "BSQ", data, data_position)
+binary_image_write(
+  filename,
+  mode = real64(),
+  image_dims,
+  interleave = "BSQ",
+  data,
+  data_position
+)
 }
 \arguments{
 \item{filename}{Character.  The path and filename of a "blank" binary file to store the image data.}

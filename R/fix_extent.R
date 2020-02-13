@@ -25,7 +25,7 @@ fix_extent <- function(extent_reference,broken_extents)
 	{
 		extent_reference = broken_extents[[1]]
 	}
-	if(class(broken_extents) != "list") broken_extents <- list(broken_extents)
+	if(class(broken_extents)[1] != "list") broken_extents <- list(broken_extents)
 	
 	base_extent=extent(extent_reference)
 	fixed_extents=mapply(

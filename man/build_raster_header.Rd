@@ -4,9 +4,17 @@
 \alias{build_raster_header}
 \title{Builds a raster header for a flat binary file.}
 \usage{
-build_raster_header(x_filename, reference_raster, out_nlayers,
-  datatype = "FLT8S", format = "raster", bandorder = "BSQ",
-  setMinMax = FALSE, additional_header = NULL, verbose = FALSE)
+build_raster_header(
+  x_filename,
+  reference_raster,
+  out_nlayers,
+  datatype = "FLT8S",
+  format = "raster",
+  bandorder = "BSQ",
+  setMinMax = FALSE,
+  additional_header = NULL,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{x_filename}{Character. The filename of the input binary file.}

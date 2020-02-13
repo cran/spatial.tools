@@ -31,7 +31,7 @@
 getValuesBlock_stackfix <- function(x, row=1, nrows=1, col=1, ncols=(ncol(x)-col+1), lyrs=(1:nlayers(x)))
 {
 	single_filename <- NULL
-	if(class(x)=="RasterStack")
+	if(class(x)[1]=="RasterStack")
 	{
 		# First we will determine the unique files
 		all_filenames <- sapply(x@layers,function(X) { filename(X) } )
@@ -60,7 +60,7 @@ getValuesBlock_stackfix <- function(x, row=1, nrows=1, col=1, ncols=(ncol(x)-col
 		return(out_matrix)
 	} else
 	{
-		if(class(x)=="RasterLayer" || nlayers(x)==1)
+		if(class(x)[1]=="RasterLayer" || nlayers(x)==1)
 			return(getValuesBlock(x, row=row, nrows=nrows, col=col, ncols=ncols))
 		else
 			return(getValuesBlock(x, row=row, nrows=nrows, col=col, ncols=ncols, lyrs=lyrs))

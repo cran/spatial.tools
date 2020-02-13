@@ -4,8 +4,14 @@
 \alias{getValuesBlock_stackfix}
 \title{Get a block of raster cell values (optimization fix for RasterStacks)}
 \usage{
-getValuesBlock_stackfix(x, row = 1, nrows = 1, col = 1, ncols = (ncol(x)
-  - col + 1), lyrs = (1:nlayers(x)))
+getValuesBlock_stackfix(
+  x,
+  row = 1,
+  nrows = 1,
+  col = 1,
+  ncols = (ncol(x) - col + 1),
+  lyrs = (1:nlayers(x))
+)
 }
 \arguments{
 \item{x}{Raster* object}

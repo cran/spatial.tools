@@ -4,11 +4,21 @@
 \alias{create_blank_raster}
 \title{Create an empty raster and header.}
 \usage{
-create_blank_raster(filename = NULL, format = "raster",
-  datatype = "FLT8S", bandorder = "BSQ", nrow = NULL, ncol = NULL,
-  nlayers = NULL, create_header = TRUE, reference_raster = NULL,
-  return_filename = TRUE, additional_header = NULL, overwrite = FALSE,
-  verbose = FALSE)
+create_blank_raster(
+  filename = NULL,
+  format = "raster",
+  datatype = "FLT8S",
+  bandorder = "BSQ",
+  nrow = NULL,
+  ncol = NULL,
+  nlayers = NULL,
+  create_header = TRUE,
+  reference_raster = NULL,
+  return_filename = TRUE,
+  additional_header = NULL,
+  overwrite = FALSE,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{filename}{Character. The output base filename of the blank file.  Will use tempfile() if nothing is provided.}

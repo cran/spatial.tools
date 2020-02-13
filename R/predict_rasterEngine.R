@@ -2,6 +2,8 @@
 #' @param object a model object for which prediction is desired.
 #' @param filename Character. Output filename.  If unset, will default to a temporary file.
 #' @param na.rm.mode Logical. Attempt to fix missing data, even if the model object doesn't support na.rm?  Default is TRUE.
+#' @param gain Numeric. A multiplier on the outputs (default = 1).
+#' @param offset Numeric. An additive to the output (default = 0).
 #' @param ncores Numeric. Number of cores to use when predicting.  Only used with randomForestSRC for now.  Do not combine with foreach registered parallel engines (e.g. sfQuickInit())
 #' @param debugmode Logical. Internal debugging for the code, will be removed eventually. Default is FALSE.
 #' @param verbose Logical. Enable verbose execution? Default is FALSE.  
@@ -78,6 +80,7 @@
 #' @export
 
 predict_rasterEngine <- function(object,filename=NULL,na.rm.mode=TRUE,
+		gain=1,offset=0,
 #		prob=NULL,
 		ncores=1,debugmode=FALSE,verbose=F,...)
 {
@@ -91,14 +94,14 @@ predict_rasterEngine <- function(object,filename=NULL,na.rm.mode=TRUE,
 		if(is.Raster(newdata))
 		{
 			### FUNCTION TO BE PASSED TO RASTERENGINE
-			predict.rasterEngine_function <- function(newdata,object,na.rm.mode,ncores,...)
+			predict.rasterEngine_function <- function(newdata,object,na.rm.mode,ncores,gain,offset,...)
 			{
 #				browser()
 				# if(sum(newdata$dim[1:2]) > 3) browser()
 				
 				# Determine all parameters that are not newdata and object:
 				local_objects <- ls()
-				model_parameters <- setdiff(local_objects,c("newdata","object","na.rm.mode","ncores"))
+				model_parameters <- setdiff(local_objects,c("newdata","object","na.rm.mode","ncores","gain","offset"))
 				
 #				browser()
 				
@@ -159,7 +162,7 @@ predict_rasterEngine <- function(object,filename=NULL,na.rm.mode=TRUE,
 					
 					# Missing factors
 					xlevels <- object$forest$xlevels
-					factor_variables <- sapply(xlevels,function(x) class(x) == "character")
+					factor_variables <- sapply(xlevels,function(x) class(x)[1] == "character")
 					if(any(factor_variables))
 					{
 						for(i in seq(xlevels)[factor_variables])
@@ -187,7 +190,8 @@ predict_rasterEngine <- function(object,filename=NULL,na.rm.mode=TRUE,
 					if(!is.null(prob))
 					{
 #						browser()
-						predict_output <- randomForestSRC::quantileReg(obj=object,prob=prob,newdata=newdata_df)
+						predict_output <- predict(object=object,prob=prob,newdata=newdata_df)
+		#						predict_output <- randomForestSRC::quantileReg(obj=object,prob=prob,newdata=newdata_df)
 					} else
 					{
 						predict_output <- predict(object=object,newdata=newdata_df)
@@ -214,8 +218,28 @@ predict_rasterEngine <- function(object,filename=NULL,na.rm.mode=TRUE,
 					}
 				}	
 				
+#				# Fix for quantregForest:
+#				if("quantregForest" %in% class(predict_output))
+#				{
+#					if(predict_output$family != "class")
+#					{
+#						# New fix for multivariate forests:
+#						if(predict_output$family == "regr+")
+#						{
+#							predict_output <- sapply(predict_output$regrOutput,function(x) return(x$predicted)) 
+#						}else
+#						{
+#							predict_output <- predict_output$predicted
+#						}
+#					} else
+#					{
+#						predict_output <- predict_output$class	
+#					}
+#				}	
+				
+				
 				# Not sure if this will work with =="array"...
-				if(class(predict_output)=="numeric" || class(predict_output)=="factor" || class(predict_output)=="array")
+				if(class(predict_output)[1]=="numeric" || class(predict_output)[1]=="factor" || is.array(predict_output))
 				{
 					#	dim(predict_output) <- c(newdata_dim[1:2])
 					predict_output <- as.data.frame(predict_output)
@@ -224,7 +248,7 @@ predict_rasterEngine <- function(object,filename=NULL,na.rm.mode=TRUE,
 				nbands_output <- prod(dim(predict_output))/prod(newdata_dim[1:2])
 				
 				# Mixed class data frame:
-				factor_columns <- sapply(predict_output,class)=="factor"
+				factor_columns <- sapply(predict_output,function(x) class(x)[1])=="factor"
 				
 				if(sum(factor_columns)>0) {
 #					browser()
@@ -260,14 +284,14 @@ predict_rasterEngine <- function(object,filename=NULL,na.rm.mode=TRUE,
 				predict_output_array <- as.matrix(predict_output)
 				dim(predict_output_array) <- c(newdata_dim[1:2],nbands_output)
 				
-				return(predict_output_array)
+				return(gain*predict_output_array+offset)
 			}
 			
 			# Check for factor layers:
 			factor_layers <- is.factor(newdata)
 			
 			additional_args <- list(...)
-			additional_args <- c(list(object=object,na.rm.mode=na.rm.mode,ncores=ncores),
+			additional_args <- c(list(object=object,na.rm.mode=na.rm.mode,gain=gain,offset=offset,ncores=ncores),
 					unlist(additional_args,recursive=FALSE))
 			additional_args$newdata <- NULL
 			

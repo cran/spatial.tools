@@ -47,7 +47,7 @@ binary_image_write=function(filename,mode=real64(),image_dims,interleave="BSQ",
 	# data_position should be of format rbind(col_pos,row_pos,band_pos)
 	# UL corner is 1,1,1
 	
-	if(class(data_position)=="list")
+	if(class(data_position)[1]=="list")
 	{
 		data_position=
 			t(expand.grid(data_position[[1]],data_position[[2]],data_position[[3]]))
@@ -79,7 +79,7 @@ binary_image_write=function(filename,mode=real64(),image_dims,interleave="BSQ",
 			)
 	}
 	
-	if(class(data)=="array")
+	if(is.array(data))
 	{
 		data=as.matrix(data,nrow=image_x*image_y,ncol=image_z)
 	} 

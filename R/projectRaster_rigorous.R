@@ -30,7 +30,7 @@ projectRaster_rigorous <- function(from,to,method="mode",na.rm=FALSE,verbose=FAL
 	chunk_function <- function(x,from,method,na.rm,...)
 	{
 #		gc()
-		if(class(from)!="RasterLayer") stop("Currently, from= must be a RasterLayer.")
+		if(class(from)[1]!="RasterLayer") stop("Currently, from= must be a RasterLayer.")
 		
 		# This should be changed and the polys made "manually":
 		chunk_vector <- rasterToPolygons(x,na.rm=FALSE,n=16)
@@ -65,7 +65,7 @@ projectRaster_rigorous <- function(from,to,method="mode",na.rm=FALSE,verbose=FAL
 		
 		return(array(chunk_vector_extract_area,dim=c(dim(x)[2],dim(x)[1],1)))
 	}
-	if(class(to)!="RasterLayer")
+	if(class(to)[1]!="RasterLayer")
 	{
 		x <- raster(to,layer=1)
 	} else

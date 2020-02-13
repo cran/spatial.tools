@@ -25,19 +25,19 @@
 
 bbox_to_SpatialPolygons <- function(x,proj4string=CRS(as.character(NA)))
 {	
-	if(class(x)=="character")
+	if(is.character(x))
 	{
 		x <- brick(x)	
 	}
 	
 	
-	if(class(x)=="RasterLayer" || class(x)=="RasterBrick" || class(x)=="RasterStack")
+	if(is.Raster(x))
 	{
 		bbox <- bbox(x)
 		proj4string <- CRS(projection(x))
 	}
 	
-	if(class(x)=="Extent")
+	if(class(x)[1]=="Extent")
 	{
 		bbox <- matrix(c(
 						x@xmin,
@@ -47,7 +47,7 @@ bbox_to_SpatialPolygons <- function(x,proj4string=CRS(as.character(NA)))
 				),nrow=2,ncol=2)
 	}
 	
-	if(class(x)=="matrix")
+	if(is.matrix(x))
 	{
 		bbox <- x
 	}

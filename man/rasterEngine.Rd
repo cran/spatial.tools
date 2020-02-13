@@ -4,14 +4,31 @@
 \alias{rasterEngine}
 \title{Engine for performing fast, easy-to-develop pixel and focal raster calculations with parallel processing capability.}
 \usage{
-rasterEngine(x, fun = NULL, args = NULL, window_dims = c(1, 1),
+rasterEngine(
+  x,
+  fun = NULL,
+  args = NULL,
+  window_dims = c(1, 1),
   window_center = c(ceiling(window_dims[1]/2), ceiling(window_dims[2]/2)),
-  filename = NULL, overwrite = FALSE, outformat = "raster",
-  additional_header = "ENVI", datatype = "FLT8S", processing_unit = NULL,
-  chunk_format = "array", minblocks = "max", blocksize = NULL,
-  outbands = NULL, outfiles = NULL, setMinMax = FALSE,
-  compileFunction = FALSE, debugmode = FALSE, .packages = NULL,
-  clearworkers = TRUE, verbose = FALSE, ...)
+  filename = NULL,
+  overwrite = FALSE,
+  outformat = "raster",
+  additional_header = "ENVI",
+  datatype = "FLT8S",
+  processing_unit = NULL,
+  chunk_format = "array",
+  minblocks = "max",
+  blocksize = NULL,
+  outbands = NULL,
+  outfiles = NULL,
+  setMinMax = FALSE,
+  compileFunction = FALSE,
+  debugmode = FALSE,
+  .packages = NULL,
+  clearworkers = TRUE,
+  verbose = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{Raster*. A Raster* or a list of named Raster* objects used as the input into the function.  This is optional, as long as some Raster* was defined in "..."}

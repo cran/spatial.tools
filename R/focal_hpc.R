@@ -75,7 +75,7 @@ focal_hpc_test <- function(x,fun,window_center,window_dims,args,
 	if(processing_unit=="single")
 	{
 		if(verbose) { message("processing_unit=window...")}
-		if(class(x)=="list")
+		if(class(x)[1]=="list")
 		{
 			r_check <- sapply(X=x,
 					FUN=function(X,window_dims,chunk_format)
@@ -94,7 +94,7 @@ focal_hpc_test <- function(x,fun,window_center,window_dims,args,
 	{
 		# The function works on the entire chunk.
 		if(verbose) { message("processing_unit=chunk...")}
-		if(class(x)=="list")
+		if(class(x)[1]=="list")
 		{
 			r_check <- sapply(X=x,
 					FUN=function(X,window_dims,chunk_format)
@@ -199,7 +199,7 @@ focal_hpc_test <- function(x,fun,window_center,window_dims,args,
 	r_check_function <- do.call(fun, r_check_args)
 	
 	# Coerce to list
-	if(class(r_check_function) != "list") r_check_function <- list(r_check_function)
+	if(class(r_check_function)[1] != "list") r_check_function <- list(r_check_function)
 	
 #	r_check_function <- lapply(X=r_check_function,FUN=function(X,nrow,ncols)
 #			{
@@ -212,7 +212,7 @@ focal_hpc_test <- function(x,fun,window_center,window_dims,args,
 #				if(is.matrix(X)) return(array(X,),dim=c(nrows,ncols,1))
 #			},nrows=getvalues_raw_nrows,ncols=getvalues_raw_ncols)
 	
-	r_check_output_classes <- sapply(r_check_function,class)
+	r_check_output_classes <- sapply(r_check_function,function(x) class(x)[1])
 	
 	if(processing_unit=="single")
 	{
@@ -476,7 +476,7 @@ focal_hpc_focalChunkFunction <- function(chunk,chunkArgs)
 		outbands_end <- cumsum(outbands_numeric)
 		outbands_start <- c(1,(outbands_end+1)[-length(filename)])
 		
-		if(class(r_out)=="numeric") dim(r_out) <- c(1,length(r_out))
+		if(class(r_out)[1]=="numeric") dim(r_out) <- c(1,length(r_out))
 		
 		r_out <- mapply(function(outbands_start,outbands_end,r_out,ncol_x) 
 				{

@@ -4,8 +4,14 @@
 \alias{projectRaster_rigorous}
 \title{Performs an area-weighted resampling of raster datasets.}
 \usage{
-projectRaster_rigorous(from, to, method = "mode", na.rm = FALSE,
-  verbose = FALSE, ...)
+projectRaster_rigorous(
+  from,
+  to,
+  method = "mode",
+  na.rm = FALSE,
+  verbose = FALSE,
+  ...
+)
 }
 \arguments{
 \item{from}{Raster* The sources raster to be resampled.}

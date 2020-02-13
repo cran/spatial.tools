@@ -63,7 +63,7 @@ list.raster.files <- function(path=".",pattern=NULL,recursive=FALSE,return_raste
 						rowID=rowIDs,.packages="spatial.tools",
 						.combine=rbind) %dopar%
 				{
-					if(class(raster)=="character") { raster <- brick(raster) }
+					if(class(raster)[1]=="character") { raster <- brick(raster) }
 					
 					bbox_poly <- bbox_to_SpatialPolygons(raster)
 					bbox_poly <- spTransform(bbox_poly,bbox_CRS)

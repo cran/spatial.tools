@@ -4,8 +4,15 @@
 \alias{spatial_sync_raster}
 \title{Spatially Sync Rasters}
 \usage{
-spatial_sync_raster(unsynced, reference, method = "ngb", size_only = FALSE,
-  raster_size, verbose = FALSE, ...)
+spatial_sync_raster(
+  unsynced,
+  reference,
+  method = "ngb",
+  size_only = FALSE,
+  raster_size,
+  verbose = FALSE,
+  ...
+)
 }
 \arguments{
 \item{unsynced}{A Raster object to be aligned to the reference raster.}

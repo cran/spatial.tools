@@ -4,14 +4,30 @@
 \alias{focal_hpc}
 \title{Engine for performing fast, easy-to-develop pixel and focal raster calculations with parallel processing capability.}
 \usage{
-focal_hpc(x, fun, args = NULL, window_dims = c(1, 1),
+focal_hpc(
+  x,
+  fun,
+  args = NULL,
+  window_dims = c(1, 1),
   window_center = c(ceiling(window_dims[1]/2), ceiling(window_dims[2]/2)),
-  filename = NULL, overwrite = FALSE, outformat = "raster",
-  additional_header = "ENVI", datatype = "FLT8S", processing_unit = NULL,
-  chunk_format = "array", minblocks = "max", blocksize = NULL,
-  outbands = NULL, outfiles = NULL, setMinMax = FALSE,
-  debugmode = FALSE, .packages = NULL, clearworkers = TRUE,
-  verbose = FALSE, ...)
+  filename = NULL,
+  overwrite = FALSE,
+  outformat = "raster",
+  additional_header = "ENVI",
+  datatype = "FLT8S",
+  processing_unit = NULL,
+  chunk_format = "array",
+  minblocks = "max",
+  blocksize = NULL,
+  outbands = NULL,
+  outfiles = NULL,
+  setMinMax = FALSE,
+  debugmode = FALSE,
+  .packages = NULL,
+  clearworkers = TRUE,
+  verbose = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{Raster*. A Raster* used as the input into the function.  Multiple inputs should be stack()'ed or list()'ed together.}
